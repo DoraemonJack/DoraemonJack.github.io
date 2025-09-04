@@ -1710,7 +1710,7 @@ img::-moz-selection {
   overflow-y: hidden;
 }
 
-/* Custom override: force navbar texts to black */
+/* Custom override: force navbar texts to black 
 .navbar-custom .navbar-brand,
 .navbar-custom .nav li a {
   color: #fff !important;
@@ -1721,3 +1721,4 @@ img::-moz-selection {
 .navbar-custom .nav li a:focus {
   color: #fff !important;
 }
+*/
