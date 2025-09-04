@@ -1149,6 +1149,21 @@ samp {
   padding: 85px 0 55px;
   color: white;
 }
+
+/* Force site/page header texts to black (title and subheading) */
+.intro-header .site-heading,
+.intro-header .site-heading h1,
+.intro-header .site-heading .subheading,
+.intro-header .page-heading,
+.intro-header .page-heading h1,
+.intro-header .page-heading .subheading {
+  color: #fff !important;
+}
+
+/* Keep homepage/page subheading (quote line) white */
+.intro-header .site-heading .subheading {
+  color: #fff !important;
+}
 @media only screen and (min-width: 768px) {
   .intro-header .site-heading,
   .intro-header .post-heading,
@@ -1181,10 +1196,10 @@ samp {
      */
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Arial", "PingFang SC", "Hiragino Sans GB", "STHeiti", "Microsoft YaHei", "Microsoft JhengHei", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif;
   line-height: 1.7;
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.1;
   display: block;
-  font-weight: 300;
+  font-weight: 600;
   margin: 10px 0 0;
 }
 @media only screen and (min-width: 768px) {
@@ -1693,4 +1708,16 @@ img::-moz-selection {
 }
 .no-scroll {
   overflow-y: hidden;
+}
+
+/* Custom override: force navbar texts to black */
+.navbar-custom .navbar-brand,
+.navbar-custom .nav li a {
+  color: #fff !important;
+}
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus,
+.navbar-custom .nav li a:hover,
+.navbar-custom .nav li a:focus {
+  color: #fff !important;
 }
