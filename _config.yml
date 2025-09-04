@@ -59,7 +59,7 @@ kramdown:
       start_line: 1
 
 # Disqus settings
-disqus_username: hux
+#disqus_username: hux
 
 # Netease settings
 netease_comment: false
@@ -70,7 +70,7 @@ netease_comment: false
 
 # Google Analytics
 ga_track_id: "UA-49627206-1" # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
+ga_domain: DoraemonJack.github.io
 
 # Sidebar settings
 sidebar: true # whether or not using Sidebar.
@@ -91,5 +91,5 @@ page-mathjax: false
 # Friends
 friends:
   [
-    { title: "乱序（Midare）", href: "http://mida.re/" },
+    #{ title: "乱序（Midare）", href: "http://mida.re/" },
   ]
