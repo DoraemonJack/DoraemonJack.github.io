@@ -740,6 +740,17 @@ select.sel-lang {
 table {
   margin-top: 10px;
 }
+/* Ensure table text color is not overridden (e.g., by theme states) */
+.post-container table,
+.post-container table th,
+.post-container table td {
+  color: #404040 !important;
+}
+
+/* Simple text color helpers for markdown inline HTML */
+.text-red { color: #d9534f !important; }
+.text-green { color: #28a745 !important; }
+.text-orange { color: #f0ad4e !important; }
 table.table > tbody th,
 table.table > thead th,
 table.table > tbody td,
