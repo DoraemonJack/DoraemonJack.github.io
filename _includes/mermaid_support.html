@@ -1,11 +1,31 @@
 <script type="module">
-    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: "default",
-      themeVariables: {
-        primaryColor: "#ff0000"
-      }
-    });
-  </script>
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
   
+  mermaid.initialize({
+    startOnLoad: false,  
+    theme: "default",
+    themeVariables: {
+      primaryColor: "#ff0000"
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const mermaidDivs = document.querySelectorAll('.mermaid');
+    
+    const mermaidCodeBlocks = document.querySelectorAll('code.language-mermaid');
+    
+    mermaidCodeBlocks.forEach((block, index) => {
+      const mermaidDiv = document.createElement('div');
+      mermaidDiv.className = 'mermaid';
+      mermaidDiv.id = `mermaid-${index}`;
+      mermaidDiv.textContent = block.textContent;
+      
+      block.parentNode.parentNode.replaceChild(mermaidDiv, block.parentNode);
+    });
+    
+    const allMermaidElements = document.querySelectorAll('.mermaid');
+    if (allMermaidElements.length > 0) {
+      mermaid.run();
+    }
+  });
+</script>

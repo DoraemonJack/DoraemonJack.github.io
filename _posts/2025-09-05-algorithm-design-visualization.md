@@ -23,6 +23,15 @@ tags:
 
 ### 分治法流程图
 
+# 流程图示例
+
+<div class="mermaid">
+graph LR
+    A --- B
+    B --> C[Happy]
+    B --> D(Sad)
+</div>
+
 ```mermaid
 graph TD
     A["大问题 P(n)"] --> B{"是否为基本情况?"}
