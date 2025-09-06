@@ -18,13 +18,11 @@ tags:
 
 ## 一、非线性规划模型
 
-$$
-\begin{cases}
+$$\begin{cases}
 \min & f(\boldsymbol{x}) \\
-\text{s.t. } & g_i(\boldsymbol{x}) \le 0,\quad i=1,\dots,p \\
+\text{s.t.} & g_i(\boldsymbol{x}) \le 0,\quad i=1,\dots,p \\
 & h_j(\boldsymbol{x}) = 0,\quad j=1,\dots,q
-\end{cases}
-$$
+\end{cases}$$
 
 其中，$f(\boldsymbol{x})$、$g_i(\boldsymbol{x})(i=1,2,\dots,p)$ 和 $h_j(\boldsymbol{x})(j=1,2,\dots,q)$ 是$\mathbb{R}^n$ 上的连续函数。
 
@@ -52,36 +50,34 @@ $$
 
 **题目：** 用惩罚函数外点法求解以下约束优化问题：
 
-$$
-\begin{cases}
+$$\begin{cases}
 \min & f(x) = x^2 \\
-\text{s.t. } & g(x) = x - 1 \leq 0
-\end{cases}
-$$
+\text{s.t.} & g(x) = x - 1 \leq 0
+\end{cases}$$
 
 **解答：**
 
 1. **构造惩罚函数：**
-   $$\phi(x, r) = x^2 + r \cdot [\max(0, x-1)]^2$$
+   $\phi(x, r) = x^2 + r \cdot [\max(0, x-1)]^2$
 
 2. **分情况讨论：**
    
-   **情况1：** 当 $x \leq 1$ 时（满足约束）
-   $$\phi(x, r) = x^2 + r \cdot 0 = x^2$$
+   **情况1：** 当 $x \leq 1$ 时（满足约束）  
+   $\phi(x, r) = x^2 + r \cdot 0 = x^2$
    
-   **情况2：** 当 $x > 1$ 时（违反约束）
-   $$\phi(x, r) = x^2 + r \cdot (x-1)^2$$
-
+   **情况2：** 当 $x > 1$ 时（违反约束）  
+   $\phi(x, r) = x^2 + r \cdot (x-1)^2$
+   
 3. **求无约束极值：**
    
-   对 $\phi(x, r)$ 关于 $x$ 求导：
-   $$\frac{d\phi}{dx} = 2x + 2r(x-1) = 2x + 2rx - 2r = 2x(1+r) - 2r$$
+   对 $\phi(x, r)$ 关于 $x$ 求导：  
+   $\frac{d\phi}{dx} = 2x + 2r(x-1) = 2x + 2rx - 2r = 2x(1+r) - 2r$  
    
-   令 $\frac{d\phi}{dx} = 0$，得：
-   $$x^* = \frac{r}{1+r}$$
+   令 $\frac{d\phi}{dx} = 0$，得：  
+   $x^* = \frac{r}{1+r}$
 
-4. **分析收敛性：**
-   $$\lim_{r \to \infty} x^* = \lim_{r \to \infty} \frac{r}{1+r} = 1$$
+4. **分析收敛性：**  
+   $\lim_{r \to \infty} x^* = \lim_{r \to \infty} \frac{r}{1+r} = 1$  
    
    因此，当 $r \to \infty$ 时，$x^* \to 1$，即最优解为 $x^* = 1$，$f(x^*) = 1$。
 
@@ -89,33 +85,31 @@ $$
 
 **题目：** 用惩罚函数外点法求解：
 
-$$
-\begin{cases}
+$$\begin{cases}
 \min & f(x_1, x_2) = x_1^2 + x_2^2 \\
-\text{s.t. } & g_1(x_1, x_2) = x_1 + x_2 - 1 \leq 0 \\
+\text{s.t.} & g_1(x_1, x_2) = x_1 + x_2 - 1 \leq 0 \\
 & g_2(x_1, x_2) = -x_1 \leq 0 \\
 & g_3(x_1, x_2) = -x_2 \leq 0
-\end{cases}
-$$
+\end{cases}$$
 
 **解答：**
 
 1. **构造惩罚函数：**
-   $$\phi(x_1, x_2, r) = x_1^2 + x_2^2 + r \sum_{i=1}^{3} [\max(0, g_i(x_1, x_2))]^2$$
+   $\phi(x_1, x_2, r) = x_1^2 + x_2^2 + r \sum_{i=1}^{3} [\max(0, g_i(x_1, x_2))]^2$
 
-2. **展开惩罚项：**
-   $$\phi(x_1, x_2, r) = x_1^2 + x_2^2 + r[\max(0, x_1+x_2-1)]^2 + r[\max(0, -x_1)]^2 + r[\max(0, -x_2)]^2$$
+2. **展开惩罚项：**  
+   $\phi(x_1, x_2, r) = x_1^2 + x_2^2 + r[\max(0, x_1+x_2-1)]^2 + r[\max(0, -x_1)]^2 + r[\max(0, -x_2)]^2$
 
-3. **在可行域内分析：**
-   当 $x_1 \geq 0, x_2 \geq 0, x_1 + x_2 \leq 1$ 时：
-   $$\phi(x_1, x_2, r) = x_1^2 + x_2^2$$
+3. **在可行域内分析：**  
+   当 $x_1 \geq 0, x_2 \geq 0, x_1 + x_2 \leq 1$ 时：  
+   $\phi(x_1, x_2, r) = x_1^2 + x_2^2$  
    
-   求极值：$\frac{\partial \phi}{\partial x_1} = 2x_1 = 0$，$\frac{\partial \phi}{\partial x_2} = 2x_2 = 0$
+   求极值：$\frac{\partial \phi}{\partial x_1} = 2x_1 = 0$，$\frac{\partial \phi}{\partial x_2} = 2x_2 = 0$  
    
    得：$x_1^* = 0, x_2^* = 0$
 
-4. **验证约束：**
-   $g_1(0,0) = -1 \leq 0$ ✓，$g_2(0,0) = 0 \leq 0$ ✓，$g_3(0,0) = 0 \leq 0$ ✓
+4. **验证约束：**  
+   $g_1(0,0) = -1 \leq 0$ ✓，$g_2(0,0) = 0 \leq 0$ ✓，$g_3(0,0) = 0 \leq 0$ ✓  
    
    因此最优解为 $(x_1^*, x_2^*) = (0, 0)$，最优值为 $f^* = 0$。
 
@@ -123,33 +117,31 @@ $$
 
 **题目：** 用惩罚函数法求解：
 
-$$
-\begin{cases}
+$$\begin{cases}
 \min & f(x_1, x_2) = x_1^2 + x_2^2 \\
-\text{s.t. } & h(x_1, x_2) = x_1 + x_2 - 2 = 0
-\end{cases}
-$$
+\text{s.t.} & h(x_1, x_2) = x_1 + x_2 - 2 = 0
+\end{cases}$$
 
 **解答：**
 
 1. **构造惩罚函数：**
-   $$\phi(x_1, x_2, r) = x_1^2 + x_2^2 + r(x_1 + x_2 - 2)^2$$
+   $\phi(x_1, x_2, r) = x_1^2 + x_2^2 + r(x_1 + x_2 - 2)^2$
 
-2. **求偏导数：**
-   $$\frac{\partial \phi}{\partial x_1} = 2x_1 + 2r(x_1 + x_2 - 2) = 0$$
-   $$\frac{\partial \phi}{\partial x_2} = 2x_2 + 2r(x_1 + x_2 - 2) = 0$$
+2. **求偏导数：**  
+   $\frac{\partial \phi}{\partial x_1} = 2x_1 + 2r(x_1 + x_2 - 2) = 0$  
+   $\frac{\partial \phi}{\partial x_2} = 2x_2 + 2r(x_1 + x_2 - 2) = 0$
 
-3. **求解方程组：**
-   从两个方程可得：$x_1 = x_2$
+3. **求解方程组：**  
+   从两个方程可得：$x_1 = x_2$  
    
-   代入第一个方程：
-   $$2x_1 + 2r(2x_1 - 2) = 0$$
-   $$2x_1 + 4rx_1 - 4r = 0$$
-   $$x_1(2 + 4r) = 4r$$
-   $$x_1 = \frac{4r}{2 + 4r} = \frac{2r}{1 + 2r}$$
+   代入第一个方程：  
+   $2x_1 + 2r(2x_1 - 2) = 0$  
+   $2x_1 + 4rx_1 - 4r = 0$  
+   $x_1(2 + 4r) = 4r$  
+   $x_1 = \frac{4r}{2 + 4r} = \frac{2r}{1 + 2r}$
 
-4. **求极限：**
-   $$\lim_{r \to \infty} x_1 = \lim_{r \to \infty} \frac{2r}{1 + 2r} = 1$$
+4. **求极限：**  
+   $\lim_{r \to \infty} x_1 = \lim_{r \to \infty} \frac{2r}{1 + 2r} = 1$  
    
    因此 $x_1^* = x_2^* = 1$，满足约束 $x_1 + x_2 = 2$，最优值为 $f^* = 2$。
 
@@ -160,10 +152,10 @@ $$
 1. **初始化：** 选择初始点 $\boldsymbol{x}^{(0)}$，初始惩罚参数 $r^{(0)} > 0$，放大因子 $C > 1$，精度要求 $\varepsilon > 0$，置 $k = 0$。
 
 2. **构造惩罚函数：**
-   $$\phi(\boldsymbol{x}, r^{(k)}) = f(\boldsymbol{x}) + r^{(k)} \sum_{i=1}^{p} [\max(0, g_i(\boldsymbol{x}))]^2 + r^{(k)} \sum_{j=1}^{q} [h_j(\boldsymbol{x})]^2$$
+   $\phi(\boldsymbol{x}, r^{(k)}) = f(\boldsymbol{x}) + r^{(k)} \sum_{i=1}^{p} [\max(0, g_i(\boldsymbol{x}))]^2 + r^{(k)} \sum_{j=1}^{q} [h_j(\boldsymbol{x})]^2$
 
 3. **求解无约束优化问题：**
-   $$\boldsymbol{x}^{(k+1)} = \arg\min_{\boldsymbol{x}} \phi(\boldsymbol{x}, r^{(k)})$$
+   $\boldsymbol{x}^{(k+1)} = \arg\min_{\boldsymbol{x}} \phi(\boldsymbol{x}, r^{(k)})$
 
 4. **检验收敛性：** 若满足收敛准则，停止；否则转步骤5。
 
