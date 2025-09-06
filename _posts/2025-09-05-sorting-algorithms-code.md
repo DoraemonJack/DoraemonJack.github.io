@@ -5,6 +5,7 @@ subtitle:     "九种经典排序算法的完整C++源码"
 date:         2025-09-05 14:40:00
 author:       "zxh"
 header-style: text
+header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 hidden:       true
 tags:

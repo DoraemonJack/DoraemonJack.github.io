@@ -5,6 +5,7 @@ subtitle:     "五大算法设计方法的详细代码示例"
 date:         2025-09-05 15:30:00
 author:       "zxh"
 header-style: text
+header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 hidden:       true
 tags:

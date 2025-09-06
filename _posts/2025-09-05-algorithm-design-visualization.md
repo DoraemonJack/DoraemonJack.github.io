@@ -5,6 +5,7 @@ subtitle:     "用动态图表理解五大算法设计方法"
 date:         2025-09-05 15:00:00
 author:       "zxh"
 header-style: text
+header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 mermaid:      true
 tags:

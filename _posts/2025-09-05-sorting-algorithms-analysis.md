@@ -6,6 +6,7 @@ date:         2025-09-05 14:36:00
 author:       "zxh"
 header-style: text
 catalog:      true
+header-img: "img/post-bg-algorithm.jpg"
 mathjax:      true
 tags:
   - Algorithm
