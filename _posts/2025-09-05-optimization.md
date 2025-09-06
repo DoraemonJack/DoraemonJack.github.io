@@ -77,7 +77,7 @@ $$\begin{cases}
    $x^* = \frac{r}{1+r}$
 
 4. **分析收敛性：**  
-   $\lim_{r \to \infty} x^* = \lim_{r \to \infty} \frac{r}{1+r} = 1$  
+   $\lim_{r \to \infty} x^* = \lim_{r \to \infty} \frac{r}{1+r} = 1$
    
    因此，当 $r \to \infty$ 时，$x^* \to 1$，即最优解为 $x^* = 1$，$f(x^*) = 1$。
 
