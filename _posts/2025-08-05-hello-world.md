@@ -2,7 +2,7 @@
 layout:       post
 title:        "Hello World"
 subtitle:     "我的第一篇博客模板"
-date:         2025-09-05 12:00:00
+date:         2025-08-05 12:00:00
 author:       "zxh"
 header-img:   "img/post-sample.jpg"
 header-style: text
@@ -26,6 +26,13 @@ tags:
 - 列表项一
 - 列表项二
 
+> **💡 文本高亮使用说明**：
+> - `<r>红色文字</r>` → <span style="color: #e74c3c;">红色文字</span>
+> - `<b>蓝色文字</b>` → <span style="color: #3498db;">蓝色文字</span>
+> - `<g>绿色文字</g>` → <span style="color: #27ae60;">绿色文字</span>
+> - `<k>关键词</k>` → <span style="background-color: #f8f9fa; color: #2c3e50; padding: 2px 6px; border-radius: 3px;">关键词</span>
+> - `<i>重要提示</i>` → <span style="color: #e74c3c; font-weight: bold;">重要提示</span>
+> - `<m>x^*</m>` → <span style="color: #e74c3c;">$x^*$</span>
 代码示例：
 
 ```python

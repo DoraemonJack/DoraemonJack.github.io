@@ -1,0 +1,37 @@
+/* 自定义文本高亮样式 */
+
+/* 颜色标签 */
+.highlight-r { color: #e74c3c; font-weight: bold; }  /* 红色 */
+.highlight-b { color: #3498db; font-weight: bold; }  /* 蓝色 */
+.highlight-g { color: #27ae60; font-weight: bold; }  /* 绿色 */
+.highlight-y { color: #f39c12; font-weight: bold; }  /* 黄色 */
+.highlight-o { color: #e67e22; font-weight: bold; }  /* 橙色 */
+.highlight-p { color: #9b59b6; font-weight: bold; }  /* 紫色 */
+
+/* 特殊样式 */
+.highlight-k { 
+    background-color: #f8f9fa; 
+    color: #2c3e50; 
+    padding: 2px 6px; 
+    border-radius: 3px; 
+    font-weight: bold; 
+}  /* 关键词 */
+
+.highlight-i { 
+    color: #e74c3c; 
+    font-weight: bold; 
+    text-decoration: underline; 
+}  /* 重要提示 */
+
+.highlight-m { 
+    color: #e74c3c; 
+    font-weight: bold; 
+}  /* 数学公式 */
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .highlight-k {
+        padding: 1px 4px;
+        font-size: 0.9em;
+    }
+}

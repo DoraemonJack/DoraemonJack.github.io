@@ -11,6 +11,7 @@ mathjax:      true
 mermaid:      true
 tags:
   - Optimization
+  - 最优化理论
   - Nonlinear Programming
   - Math
 ---

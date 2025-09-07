@@ -11,6 +11,7 @@ mathjax:      true
 mermaid:      true
 tags:
   - Optimization
+  - 最优化理论
   - Nonlinear Programming
   - Math
   - Interior Point Method
@@ -94,11 +95,11 @@ graph LR
 
 下图展示了内点法的基本概念和收敛过程：
 
-![内点法基本概念]({{ site.baseurl }}/img/punishment/interior_point_concept.png)
+![内点法基本概念]({{ site.baseurl }}/img/interior_point_method/interior_point_concept.png)
 
-![内点法收敛过程]({{ site.baseurl }}/img/punishment/interior_point_convergence.png)
+![内点法收敛过程]({{ site.baseurl }}/img/interior_point_method/interior_point_convergence.png)
 
-![简单内点法示例]({{ site.baseurl }}/img/punishment/simple_interior_point_test.png)
+![简单内点法示例]({{ site.baseurl }}/img/interior_point_method/simple_interior_point_test.png)
 
 **图片说明：**
 - **左图**：展示不同障碍参数r对障碍函数形状的影响，随着r减小，最优解逐渐逼近约束边界
