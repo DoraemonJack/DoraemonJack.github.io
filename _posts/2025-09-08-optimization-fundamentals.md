@@ -196,6 +196,12 @@ $$f^*(y) = \sup_{x \in \mathbb{R}^n} \{y^T x - f(x)\}$$
 
 **几何意义**：$f^*(y)$ 是 $f$ 的所有仿射下界 $y^T x - \alpha$ 中最大的 $\alpha$ 值。
 
+**🔍<span style="color: #e74c3c;">解释</span>**：
+一维问题的等价问题： $$f^*(y) = - \inf_x \big( f(x) - yx \big)$$
+假设：$$l(x) = yx - c$$
+看作一条斜率为 $y$ 的直线（在高维就是超平面），那么这条直线要想成为 $f(x)$ 的“支撑直线”，就必须满足：
+$$l(x) \le f(x), \quad \forall x$$ 也就是直线永远在函数曲线的下方。
+
 ![共轭函数示例]({{ site.baseurl }}/img/optimization_fundamentals/conjugate_functions.png)
 
 ### 3.2 共轭函数的基本性质
@@ -266,7 +272,7 @@ $$\nabla f(x^*) = 0 \quad \text{且} \quad \nabla^2 f(x^*) \succ 0$$
 ![无约束优化问题最优性条件]({{ site.baseurl }}/img/optimization_fundamentals/unconstrained_optimality.png)
 
 **证明一阶必要条件**：
-设 $x^*$ 是局部最优解，则存在 $\delta > 0$ 使得 $f(x^*) \leq f(x)$ 对所有 $\|x - x^*\| < \delta$ 成立。
+设 $x^*$ 是局部最优解，则存在 $$\delta > 0$$ 使得 $$f(x^*) \leq f(x)$$ 对所有 $$\|x - x^*\| < \delta$$ 成立。
 
 对于任意 $d \in \mathbb{R}^n$，考虑 $x = x^* + td$，其中 $t > 0$ 充分小使得 $\|x - x^*\| = t\|d\| < \delta$。
 
@@ -370,6 +376,10 @@ $$\begin{align}
 & x_1 \geq 0, \quad x_2 \geq 0
 \end{align}$$
 
+1. <span style="color: #27ae60;">写出 KKT 条件并求所有候选点；</span>
+   
+2. <span style="color: #27ae60;">判断候选点是否满足**二阶必要条件**（写出临界锥并验证拉格朗日 Hessian 在其上半正定）</span>。
+
 **解**：
 拉格朗日函数：$L(x, \lambda) = x_1^2 + x_2^2 + \lambda_1(1 - x_1 - x_2) - \lambda_2 x_1 - \lambda_3 x_2$
 
@@ -381,11 +391,47 @@ KKT条件：
 - $\lambda_1(1 - x_1 - x_2) = 0, \quad \lambda_2 x_1 = 0, \quad \lambda_3 x_2 = 0$
 
 **分析**：
+
 1. 如果 $x_1 > 0, x_2 > 0$，则 $\lambda_2 = \lambda_3 = 0$
 2. 如果 $x_1 + x_2 > 1$，则 $\lambda_1 = 0$，得到 $x_1 = x_2 = 0$，矛盾
 3. 因此 $x_1 + x_2 = 1$，且 $x_1 = x_2 = \frac{1}{2}$
 
 验证：$x_1^* = x_2^* = \frac{1}{2}$ 满足所有KKT条件，是最优解。
+
+ <span style="color: #e74c3c; font-weight: bold;">二阶必要条件检验（主干流程）</span>
+
+1. 拉格朗日 Hessian（对 $x$ 的二阶导）：
+   
+
+$$\nabla^2_{xx}\mathcal L = \nabla^2 f = \begin{pmatrix}2 & 0\\[4pt]0 & 2\end{pmatrix} = 2I.$$
+
+（这里约束是<span style="color: #e74c3c;">线性的</span>，故它们对 Hessian<span style="color: #e74c3c;"> 没有二阶贡献</span>。）
+
+2. 活跃约束集合 $\mathcal A$ 在 $x^\star$：
+   
+
+* 等式 $h$ 总是活动的 → $h$ 在 $\mathcal A$。
+  
+* 不等式 $g$ 在 $x^\star=(1/2,1/2)$ 是否活动？ $g(x^\star)=-x_1=-1/2<0$，所以 **不活动**（无等号）。且对应的 $\mu^\star=0$。
+  
+
+因此在该点**只有等式约束**在活跃集合里。
+
+3. ⭐临界锥（或切空间）$C$：  
+    对于等式约束 $h$ 的切空间条件是 $\nabla h(x^\star)^\top d =0$。
+    
+    ⭐这里 $\nabla h=(1,1)$，所以$$C = \{d=(d_1,d_2)\mid d_1+d_2=0\}.$$（因为不等式不活动，所以没有额外的不等式约束限制。）
+
+4. 在临界方向 $d\in C$ 上检验二阶形式：  
+    取任意 $d=(t,-t)$（$t\in\mathbb R$），
+
+$$d^\top \nabla^2_{xx}\mathcal L\, d  
+= (t,-t)\begin{pmatrix}2&0\\0&2\end{pmatrix}\begin{pmatrix}t\\-t\end{pmatrix}  
+=2(t^2+t^2)=4t^2 \ge 0.$$
+
+对所有临界方向均 $\ge0$，因此**二阶必要条件成立**。
+
+进一步注意：当 $t\ne0$ 时上式严格 $>0$，所以实际上在临界锥上拉格朗日 Hessian 是**正定**的，从而满足二阶**充分**条件 → 说明这是严格局部最小点（受约束的局部极小）。
 
 ### 4.7 最优性条件例题
 
@@ -444,32 +490,6 @@ $$\begin{align}
    - 因此 $x^2 + y^2 = 1$，且 $x = y = \frac{1}{\sqrt{2}}$
 
 4. 验证：$f(\frac{1}{\sqrt{2}}, \frac{1}{\sqrt{2}}) = \frac{2}{\sqrt{2}} = \sqrt{2}$
-
-**例4.5** 考虑约束优化问题：
-$$\begin{align}
-\min \quad & f(x,y) = x^2 + y^2 \\
-\text{s.t.} \quad & x + y \geq 1 \\
-& x \geq 0, \quad y \geq 0
-\end{align}$$
-
-**解**：
-1. 拉格朗日函数：$L(x,y,\lambda_1,\lambda_2,\lambda_3) = x^2 + y^2 + \lambda_1(1 - x - y) - \lambda_2 x - \lambda_3 y$
-
-2. KKT条件：
-   - $\frac{\partial L}{\partial x} = 2x - \lambda_1 - \lambda_2 = 0$
-   - $\frac{\partial L}{\partial y} = 2y - \lambda_1 - \lambda_3 = 0$
-   - $x + y \geq 1$，$x \geq 0$，$y \geq 0$
-   - $\lambda_1 \geq 0$，$\lambda_2 \geq 0$，$\lambda_3 \geq 0$
-   - $\lambda_1(1 - x - y) = 0$，$\lambda_2 x = 0$，$\lambda_3 y = 0$
-
-3. 分析：
-   - 如果 $x > 0, y > 0$，则 $\lambda_2 = \lambda_3 = 0$
-   - 如果 $x + y > 1$，则 $\lambda_1 = 0$，得到 $x = y = 0$，矛盾
-   - 因此 $x + y = 1$，且 $x = y = \frac{1}{2}$
-
-4. 验证：$f(\frac{1}{2}, \frac{1}{2}) = \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$
-
-![KKT条件详细解释]({{ site.baseurl }}/img/optimization_fundamentals/kkt_conditions_detailed.png)
 
 ![3D最优性条件]({{ site.baseurl }}/img/optimization_fundamentals/3d_optimality.png)
 
@@ -668,15 +688,19 @@ $$g(\lambda^*, \mu^*) \leq L(x^*, \lambda^*, \mu^*) = f(x^*)$$
 ![对偶问题几何解释]({{ site.baseurl }}/img/optimization_fundamentals/对偶问题.png)
 
 **图中说明**：
-- **蓝色区域**：原问题的可行域
-- **红色曲线**：目标函数 $f(x) = x_1^2 + x_2^2$ 的等高线
-- **绿色点**：原问题的最优解 $x^* = (\frac{1}{2}, \frac{1}{2})$
-- **黄色区域**：对偶问题的可行域
-- **紫色曲线**：对偶函数 $g(\lambda)$ 的等高线
-- **橙色点**：对偶问题的最优解 $\lambda^* = (1, 0)$
+
+**左侧图表（原问题）**：
+- **橙色曲线**：目标函数 $f(x) = x^2$
+- **红色虚线**：约束条件 $x \geq 1$（垂直线）
+- **黑色×标记**：原问题的最优解 $x^* = 1$，最优值 $f(x^*) = 1$
+
+**右侧图表（对偶问题）**：
+- **橙色曲线**：对偶函数 $g(\lambda) = \lambda - \frac{\lambda^2}{4}$
+- **红色虚线**：原问题的最优值参考线 $g(\lambda) = 1$
+- **黑色×标记**：对偶问题的最优解 $\lambda^* = 2$，最优值 $g(\lambda^*) \approx 1$
 
 **强对偶的几何意义**：
-- 原问题的最优值 = 对偶问题的最优值 = $\frac{1}{2}$
+- 原问题的最优值 = 对偶问题的最优值 = $1$
 - 对偶间隙为0，表示没有效率损失
 - 两个问题在几何上达到完美平衡
 
@@ -686,7 +710,7 @@ $$g(\lambda^*, \mu^*) \leq L(x^*, \lambda^*, \mu^*) = f(x^*)$$
 最优化理论基础建立在以下几个核心概念之上：
 
 1. **凸集和凸函数**：为优化问题提供了良好的几何和函数性质
-2. **共轭函数**：建立了函数与其对偶表示之间的联系
+2. **证明一阶必要条件共轭函数**：建立了函数与其对偶表示之间的联系
 3. **最优性条件**：包括无约束和约束优化问题的完整最优性理论
 4. **对偶理论**：通过强对偶和弱对偶理解优化问题的本质特征
 

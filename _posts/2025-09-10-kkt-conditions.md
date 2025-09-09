@@ -52,61 +52,70 @@ $$\begin{align}
 - $h_j: \mathbb{R}^n \to \mathbb{R}$ 是等式约束函数
 
 ## 二、KKT条件的数学表述
-
+![KKT条件的数学表述]({{ site.baseurl }}/img/kkt/KKT条件公式.png)
 ### 2.1 KKT条件的内容
 
 设 $$x^*$$ 是约束优化问题的局部最优解，且满足**线性无关约束条件（LICQ）**，则存在拉格朗日乘子 $$\lambda_i^* \geq 0$$ 和 $$\nu_j^*$$ 使得：
 
-**1. 平稳性条件（Stationarity）**：
+**1. 平稳性条件（Stationarity）**(<span style="color: #e74c3c;">驻点条件</span>)：
 $$\nabla f(x^*) + \sum_{i=1}^p \lambda_i^* \nabla g_i(x^*) + \sum_{j=1}^q \nu_j^* \nabla h_j(x^*) = 0$$
+
+👉 目标函数的梯度，被约束的“拉力”平衡住了。
 
 **2. 原始可行性（Primal Feasibility）**：
 $$g_i(x^*) \leq 0, \quad i = 1, \ldots, p$$
 $$h_j(x^*) = 0, \quad j = 1, \ldots, q$$
 
+👉 解必须在可行域内。
+
 **3. 对偶可行性（Dual Feasibility）**：
 $$\lambda_i^* \geq 0, \quad i = 1, \ldots, p$$
+
+👉 不等式约束的“罚力度”不能为负。
 
 **4. 互补松弛性（Complementary Slackness）**：
 $$\lambda_i^* g_i(x^*) = 0, \quad i = 1, \ldots, p$$
 
-### 2.2 拉格朗日函数
+👉 如果约束没“卡住”（$g_i(x^*)<0$），它的乘子$\lambda$必须=0； 如果约束正好“贴住”（$g_i(x^*)=0$），它的乘子$\lambda$可以> 0。
 
-KKT条件可以通过拉格朗日函数来理解：
-$$L(x, \lambda, \nu) = f(x) + \sum_{i=1}^p \lambda_i g_i(x) + \sum_{j=1}^q \nu_j h_j(x)$$
-
-KKT条件等价于：
-$$\nabla_x L(x^*, \lambda^*, \nu^*) = 0$$
+直观理解就是：
+ 👉 **最优点的梯度被一部分约束"抵消"，最终解要么在内部（无约束情况），要么在边界（激活约束起作用.**
 
 ## 三、KKT条件的几何意义
 
 ### 3.1 几何直观
+<div align="center">
+<b>图1：KKT条件单约束情况</b>
+</div>
+![kkt条件单约束情况]({{ site.baseurl }}/img/kkt/kkt条件单约束情况.png)
+<div align="center">
+<b>图2：KKT条件多约束情况</b>
+</div>
+![kkt条件多约束情况]({{ site.baseurl }}/img/kkt/kkt条件多约束情况.png)
 
 KKT条件的几何意义可以通过以下方式理解：
 
 **在最优解处，目标函数的梯度可以表示为约束函数梯度的非负线性组合**。
 
 具体来说：
-- 对于**起作用的不等式约束**（$$g_i(x^*) = 0$$），其梯度 $$\nabla g_i(x^*)$$ 指向可行域外部
-- 对于**不起作用的不等式约束**（$$g_i(x^*) < 0$$），对应的乘子 $$\lambda_i^* = 0$$
-- 对于**等式约束**，梯度 $$\nabla h_j(x^*)$$ 垂直于约束曲面
+- 对于**起作用的不等式约束**（<span style="color: #e74c3c;">激活约束</span>）（$$g_i(x^*) = 0$$），其梯度 $$\nabla g_i(x^*)$$ 指向可行域外部
+- 对于**不起作用的不等式约束**（<span style="color: #e74c3c;">非激活约束</span>）（$$g_i(x^*) < 0$$），对应的乘子 $$\lambda_i^* = 0$$
+- 对于**等式约束**（<span style="color: #e74c3c;">始终是激活的</span>），梯度 $$\nabla h_j(x^*)$$ 垂直于约束曲面
 
 ### 3.2 几何解释的数学表述
 
-设 $\mathcal{A}(x^*) = \{i : g_i(x^*) = 0\}$ 为在 $$x^*$$ 处起作用的约束集合，则KKT条件可以写成：
+设 $$\mathcal{A}(x^*) = \{i : g_i(x^*) = 0\}$$ 为在 $$x^*$$ 处起作用的约束集合，则KKT条件可以写成：
 
 $$\nabla f(x^*) + \sum_{i \in \mathcal{A}(x^*)} \lambda_i^* \nabla g_i(x^*) + \sum_{j=1}^q \nu_j^* \nabla h_j(x^*) = 0$$
 
 其中 $\lambda_i^* \geq 0$ 对所有 $i \in \mathcal{A}(x^*)$。
 
-## 四、约束条件
+## 四、约束条件（"正则点"）
 
 ### 4.1 线性无关约束条件（LICQ）
 
-**定义**：在点 $x^*$ 处，所有起作用约束的梯度线性无关，即：
+**定义**：在点 $x^*$ 处，所有起作用约束的梯度线性无关，即：线性无关。
 $$\{\nabla g_i(x^*) : i \in \mathcal{A}(x^*)\} \cup \{\nabla h_j(x^*) : j = 1, \ldots, q\}$$
-
-线性无关。
 
 **重要性**：LICQ是KKT条件成立的必要条件。如果不满足LICQ，KKT条件可能不成立。
 
@@ -114,9 +123,9 @@ $$\{\nabla g_i(x^*) : i \in \mathcal{A}(x^*)\} \cup \{\nabla h_j(x^*) : j = 1, \
 
 除了LICQ，还有其他约束条件可以保证KKT条件的成立：
 
-- **Mangasarian-Fromovitz条件（MFCQ）**
-- **线性独立约束条件（LICQ）**
-- **Slater条件**（对于凸优化问题）
+- **Mangasarian-Fromovitz条件（MFCQ）**：比起LICQ稍微弱一些，要求等式约束梯度线性无关，并且在一个方向能“离开”激活约束。
+- **线性独立约束条件（LICQ）** ：在点$x*$所有<span style="color: #e74c3c;">激活的不等式约束的梯度</span> $$\nabla g_i(x^*)$$ 和<span style="color: #e74c3c;">等式约束的梯度$\nabla h_j(x^*)$</span>必须线性无关。
+- **Slater条件**（对于凸优化问题） ：如果问题是凸的，只要存在一个严格可行点（即$g_i(x) < 0 且h_j(x) = 0$）,则满足正则条件。
 
 ## 五、KKT条件的应用实例
 
@@ -362,36 +371,6 @@ h_j(x^*) = 0, \quad j = 1, \ldots, q
 - 确定支持向量
 - 计算最优分离超平面
 - 理解软间隔分类器
-
-### 9.2 经济学中的优化问题
-
-在经济学中，KKT条件用于：
-- 消费者理论中的效用最大化
-- 生产者理论中的利润最大化
-- 一般均衡理论
-
-### 9.3 工程优化
-
-在工程应用中，KKT条件用于：
-- 结构优化设计
-- 资源分配问题
-- 控制系统设计
-
-## 十、总结
-
-KKT条件是约束优化理论的核心，它：
-
-1. **提供了约束优化问题的最优性条件**
-2. **将拉格朗日乘数法推广到不等式约束**
-3. **具有深刻的几何意义**
-4. **在实际问题中有广泛应用**
-
-掌握KKT条件对于理解约束优化理论和解决实际问题具有重要意义。通过本文的学习，读者应该能够：
-
-- 理解KKT条件的数学表述和几何意义
-- 掌握KKT条件的计算步骤
-- 能够应用KKT条件解决简单的约束优化问题
-- 了解KKT条件在实际问题中的应用
 
 ---
 
