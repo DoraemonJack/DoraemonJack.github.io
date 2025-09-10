@@ -9,7 +9,6 @@ header-img: "img/post-bg-math.jpg"
 catalog:      true
 mathjax:      true
 mermaid:      true
-hidden :      true
 tags:
   - Optimization
   - 最优化算法
@@ -890,6 +889,17 @@ L-BFGS的并行化主要体现在：
 拟牛顿法在现代优化中仍然是核心方法，理解其原理对于解决实际优化问题具有重要意义。
 
 ---
+
+
+## 相关例题
+
+如果您想查看本文所有的相关例题，请点击下方链接：
+
+<div style="text-align: center; margin: 30px 0;">
+  <a href="/2025/09/14/newton-quasi-newton-methods-examples/" class="btn btn-primary btn-lg" style="display: inline-block; padding: 15px 30px; background: linear-gradient(45deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 18px; box-shadow: 0 8px 15px rgba(0,0,0,0.1); transition: all 0.3s ease; border: none;">
+    <i class="fa fa-code" style="margin-right: 10px;"></i>查看相关例题
+  </a>
+</div>
 
 > **相关文章**:
 > - [《最优化方法——最速下降法与共轭梯度法》](/2025/09/11/steepest-descent-and-conjugate-gradient/)
