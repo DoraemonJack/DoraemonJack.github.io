@@ -1,8 +1,8 @@
 ---
 layout:       post
-title:        "移动立方体算法 —— 三维等值面提取的经典方法"
+title:        "移动立方体算法 —— 三维等值面提取的经典方法以及其扩展和改进"
 subtitle:     "从标量场数据构建三角网格的优雅算法"
-date:         2025-09-16 10:00:00
+date:         2025-09-20 10:00:00
 author:       "zxh"
 header-style: text
 header-img: "img/post-bg-algorithm.jpg"
@@ -11,6 +11,7 @@ mathjax:      true
 mermaid:      true
 tags:
   - Algorithm
+  - 三维算法
   - Computer Graphics
   - 3D Reconstruction
   - Visualization
@@ -264,6 +265,16 @@ MCTT(sdf_bone_tooth_gum) -> Mesh_tooth,Mesh_bone,Mesh_gum
 
 ![对具有两个以上面中心的立方体中的线段进行三角剖分。]({{ site.baseurl }}/img/marching%20cude/TriangulationOfSegements%20cube_FaceCenters.png)
 
+### 6.5 跨体素算法  
+（算法是一种将不同分辨率体素数据生成的相邻三角网格无缝拼接在一起的方法，从而使细节层次（LOD）能够应用于大型体素数据集）
+
+Transvoxel算法的工作原理是在以一种分辨率采样的体素数据和以该分辨率一半采样的体素数据之间的边界上，在常规单元之间插入特殊的过渡单元。我们并非考虑过渡边界处全分辨率和半分辨率数据的所有可能的体素状态组合（这将需要处理大约120万个案例），而是仅考虑高分辨率数据的9个样本。这使得我们需要处理的案例数量大大减少，仅为512个，而这些案例恰好属于图2所示的73个等价类。每个过渡单元都填充有这些三角形图案之一，以便完美填充不同分辨率网格之间出现的接缝、裂缝和孔洞，正如图1中洞穴的处理方式一样。
+
+📄 [跨体素算法的网站](https://transvoxel.org/)
+
+![Transvoxel算法效果]({{ site.baseurl }}/img/marching%20cude/transvoxel.png)
+
+
 **相关参考资料：**  
 📄 [Octree-Based Decimation of Marching Cubes Surface]({{ site.baseurl }}/files/marching cude/Multiple%20material%20marching%20cubes%20algorithm.pdf) - 基于多材质MC行进立方体算法
 
@@ -316,6 +327,9 @@ Octree 的思想其实非常直观：
 
 **相关参考资料：**  
 📄 [Octree-Based Decimation of Marching Cubes Surface]({{ site.baseurl }}/files/marching cude/5_Octree-Based%20Decimation%20of%20Marching%20Cubes%20Surface.ppt) - 基于八叉树的移动立方体表面简化方法
+
+**具体实现和代码：**
+📄 [参考meshlab中对possion重建中的MC算法优化和实现](https://github.com/cnr-isti-vclab/meshlab/tree/main/src/meshlabplugins/filter_screened_poisson/Src)
 
 ## 七、算法步骤总结以及代码
 
