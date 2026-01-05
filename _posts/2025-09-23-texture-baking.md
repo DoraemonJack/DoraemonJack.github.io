@@ -96,16 +96,172 @@ struct Vertex {
 
 ### 2.2 UV展开算法
 
-首先作为引入，这里理解一下参数化的基本数学原理：  
+参数化的本质是建立一个**映射函数**，将三维网格上的点  $v\left(x,y,z\right)$  映射到二维平面的  $u\left(u,v\right)$  坐标上。
+
+遗憾的是，根据高斯绝妙定理（Theorema Egregium），除了圆柱、圆锥这种“可展曲面”外，任何 3D 曲面在展开时都会产生扭曲。因此，**UV 算法的核心目标就是：如何平衡并最小化这种扭曲。**
+
+### 2.2.1 三大优化目标
+
+1.  **保角（Conformal）：** 保持角度不变。贴图上的正方形在模型上还是正方形，不会变成菱形。
+    
+2.  **等面积（Equiareal）：** 保持面积比例。模型上大的面，展开后依然大，保证像素密度均匀。
+    
+3.  **等距（Isometric）：** 最完美的境界（角度和面积均不变），但物理上几乎不可能对复杂模型实现。
+
+一个完整的参数化流程包含三个关键环节：
+
+*   **Segmentation（分割/切口）：** 像剥橘子皮一样，必须在合适的地方“剪开”。好的算法会自动寻找高曲率或隐蔽区域作为 Seams（缝合线）。
+    
+*   **Parameterization（参数化）：** 运行上述 LSCM 或 ARAP 算法，将模型摊平。
+    
+*   **Packing（排版）：** 将展开后的各个"UV 岛"紧凑地塞进 0 到 1 的正方形方块内，榨干每一张纹理贴图的像素利用率。
+
+### 2.2.2 参数化的基本数学原理
+
+在深入探讨具体算法之前，我们需要理解参数化的数学基础。参数化的本质是建立一个**映射函数**，将三维网格上的点 $v(x,y,z)$ 映射到二维平面的 $u(u,v)$ 坐标上。
+
+#### 2.2.2.1 参数化映射
+
+**参数化映射**可以形式化地表示为：
+
+$$\phi: \mathcal{M} \subset \mathbb{R}^3 \rightarrow \Omega \subset \mathbb{R}^2$$
+
+其中：
+- $\mathcal{M}$ 是三维网格表面（流形）
+- $\Omega$ 是二维参数域（通常是单位正方形 $[0,1]^2$）
+- $\phi$ 是映射函数，将3D点 $(x,y,z)$ 映射到2D点 $(u,v)$
+
+映射函数通过切映射，切映射本质上是通过雅可比矩阵操作：
+$$
+J_f = \frac{\partial (x, y, z)}{\partial (u, v)} = 
+\begin{bmatrix}
+\frac{\partial x}{\partial u} & \frac{\partial x}{\partial v} \\
+\frac{\partial y}{\partial u} & \frac{\partial y}{\partial v} \\
+\frac{\partial z}{\partial u} & \frac{\partial z}{\partial v}
+\end{bmatrix}
+= [f_u, f_v]
+$$
+
+设在P点的邻域内，(u,v)发生微小的变化，则其微分形式为:
+
+$$
+f(u + \Delta u, v + \Delta v) = f(u, v) + J_f \begin{bmatrix} \Delta u \\ \Delta v \end{bmatrix}
+$$
+
+现在对雅可比矩阵进行奇异值分解的操作:
+$$
+J_f = U \Sigma V^T = U 
+\begin{bmatrix}
+\sigma_1 & 0 \\
+0 & \sigma_2 \\
+0 & 0
+\end{bmatrix} V^T
+$$
+
+> 其中雅可比矩阵解释：
+1. $V^T$ 的作用
+   将参数域坐标旋转到两个相互垂直的特征方向 $V_1、V_2$ 上。这两个方向对应曲面切平面椭圆的长轴和短轴方向。
+2. Σ 的作用
+   在新的 u、v 方向上进行伸缩变换：  
+   在 u 方向上伸缩 $\sigma_1$ 倍  
+   在 v 方向上伸缩 $\sigma_2$ 倍  
+   **理想情况**：$\sigma_1 = \sigma_2 = 1$（无缩放）  
+3. U 的作用
+   将伸缩后的椭圆旋转到曲面的切平面上。
+
+#### 2.2.2.2 度量张量与第一基本形式
+
+为了量化参数化过程中的**失真**，我们需要引入**度量张量（Metric Tensor）**的概念。
+
+由雅可比矩阵可知：
+$$
+J_f = U \Sigma V^T
+$$
+
+$$
+J_f^T J_f = (U \Sigma V^T)^T U \Sigma V^T = V \Sigma^2 V^T = V \begin{bmatrix} \sigma_1^2 & 0 \\ 0 & \sigma_2^2 \\ 0 & 0 \end{bmatrix} V^T = V \begin{bmatrix} \lambda_1 & 0 \\ 0 & \lambda_2 \\ 0 & 0 \end{bmatrix} V^T
+$$
+
+因为 $V$ 是正交矩阵，所以 $\lambda_1, \lambda_2$ 是 $J_f^T J_f$ 的特征值，并且 $\sigma_1$ 和 $\sigma_2$ 是它们的平方根，我们可以通过求 $J_f^T J_f$ 的特征值来求解 $J_f$ 的特征值。
+
+正好，$J_f^T J_f$ 就是曲面的第一基本式*：
+
+$$
+I = J_f^T J_f = \begin{bmatrix} E & G \\ G & F \end{bmatrix}
+$$
+
+可得：
+
+$$
+\lambda_{1,2} = \frac{1}{2} ((E + G) \pm \sqrt{4F^2 + (E - G)^2})
+$$
+
+在3D曲面上，给定参数化 $\phi: (u,v) \mapsto (x,y,z)$，**第一基本形式（First Fundamental Form）**定义为：
+
+$$I = \begin{pmatrix} E & F \\ F & G \end{pmatrix} = \begin{pmatrix} \phi_u \cdot \phi_u & \phi_u \cdot \phi_v \\ \phi_v \cdot \phi_u & \phi_v \cdot \phi_v \end{pmatrix}$$
+
+其中：
+- $\phi_u = \frac{\partial \phi}{\partial u}$ 是 $u$ 方向的切向量
+- $\phi_v = \frac{\partial \phi}{\partial v}$ 是 $v$ 方向的切向量
+- $E, F, G$ 是第一基本形式的系数
+
+**理想参数化**应该满足：
+- **等距映射（Isometric）**：$$I = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$（单位矩阵）
+- **共形映射（Conformal）**：$E = G$ 且 $F = 0$（保持角度）
+- **等面积映射（Equiareal）**：$\det(I) = EG - F^2 = 1$（保持面积）
+
+#### 2.2.2.3 能量最小化框架
+
+曲面的参数化方法很多， 为了衡量算法的优劣，大多数参数化算法都可以统一到**能量最小化**框架：
+
+$$\min_{u} E(u) = \sum_{T \in \text{Faces}} E_T(u)$$
+
+其中 $E_T$ 是每个三角形的局部能量：
+
+- **Tutte**：$E_T = \sum_{(i,j) \in T} \|u_i - u_j\|^2$（均匀权重）
+- **Harmonic**：$E_T = \sum_{(i,j) \in T} w_{ij} \|u_i - u_j\|^2$（cotan权重）
+- **LSCM**：$E_T = \text{Area}(T) \cdot \|\nabla u - \nabla v^{\bot}\|^2$（共形能量）
+- **ARAP**：$E_T = \sum_{(i,j) \in T} w_{ij} \|(u_i - u_j) - R_i(v_i - v_j)\|^2$（刚体保持）
+
+#### 2.2.2.4 三角形的局部线性映射
+
+由于2.2.2.1 中3D三角形可以通过映射函数映射到参数域中，即:$$ f: S \subset R^{3} \rightarrow \Omega \subset R^{2} $$。因此我们亦可以用简单的线性映射研究这个问题。
+为了简化计算，我们先将每个3D三角形上创建局部坐标系，将三维三角形坐标映射为二维坐标。因此我们只需研究（X，Y）和（u，v）之间的映射关系。
+
+![三角形中的局部X，Y坐标系]({{ site.baseurl }}/img/texture_baking/Local_XY_system_in_a_triangle.png)
+<center> 图.三角形中的局部X，Y坐标系 </center>
+
+推导线性映射中的雅可比矩阵：
+
+![利用克拉默法则计算重心坐标]({{ site.baseurl }}/img/texture_baking/Derive_Jacobian_matrix_in_linear_mappings_1.jpg)
+<center> 图.利用克拉默法则计算重心坐标 </center>
+
+![计算线性映射中的雅可比矩阵]({{ site.baseurl }}/img/texture_baking/Derive_Jacobian_matrix_in_linear_mappings_2.jpg)
+<center> 图.计算线性映射中的雅可比矩阵 </center>
+
+
+#### 2.2.2.5 边界条件
+
+参数化需要适当的**边界条件**来消除自由度：
+
+1. **固定边界（Fixed Boundary）**：将边界点固定到凸多边形（如圆盘）
+   - 优点：保证无翻转
+   - 缺点：边界形状受限
+
+2. **自由边界（Free Boundary）**：只固定少量点（通常2个），让边界自然优化
+   - 优点：边界形状更自然
+   - 缺点：可能产生翻转
+
+3. **混合边界（Mixed Boundary）**：部分边界固定，部分自由 
 
 ![固定边界法]({{ site.baseurl }}/img/texture_baking/3Dmesh-2DUV.png)
 <center> 图.固定边界法的人脸顶点映射 </center>
 
-![数化整体思路演示]({{ site.baseurl }}/img/texture_baking/参数化整体思路演示.jpg)
-<center> 图.利用弹簧系统解释参数原理 </center>
+### 2.2.3 参数化的算法
+
 UV展开是将三维网格表面展开到二维平面的过程，主要算法包括：
 
-#### 2.2.1 **基于顶点的展开（Vertex-based Unfolding）**
+#### 2.2.3.1 **基于顶点的展开（Vertex-based Unfolding）**
 
 核心思想：UV坐标直接定义到顶点上，每个顶点对应一个(u,v)，相邻三角形共用一个顶点的UV，不显式的定义seam边(接缝边)。本质上：展开的自由度定义在顶点而不是边上。
 
@@ -114,7 +270,7 @@ UV展开是将三维网格表面展开到二维平面的过程，主要算法包
 * Harmonic parameterization  
 * ARAP（As-Rigid-As-Possible）
 
-## ⭐ **Tutte embedding（圆盘展开参数化）**
+##### ⭐ **Tutte embedding（圆盘展开参数化）**
 
 **内容**：把有边界的三角网格，  
 >* 边界点 <span style="color: #e74c3c;">固定在一个凸多边形(多半是圆盘)</span>  
@@ -133,7 +289,7 @@ $\Delta u = 0 \quad (\text{内部点})$
 * 3.且要求<span style="color: #e74c3c;">边界必须是凸的</span>   
 📌 **注：很多高级参数化算法的初始解就是 Tutte**
 
-## ⭐ **Harmonic Parameterization（调和参数化）**
+##### ⭐ **Harmonic Parameterization（调和参数化）**
 
 **内容**：Harmonic 和 Tutte 的核心公式相同，但 Harmonic 用 <span style="color: #e74c3c;">cotan 权重</span> 让参数化考虑三角形几何，Tutte 用均匀权重只做平均；Harmonic 更平滑但不保证无翻转，而 Tutte 绝对稳定但角度畸变大
 
@@ -149,7 +305,10 @@ $\Delta u = 0 \quad (\text{内部点})$
 * 2.不能保证不翻转（尤其边界不凸或切割不好）  
 📌 **注：很多高级参数化算法的初始解也可以是 Harmonic**
 
-## ⭐ **ARAP（As-Rigid-As-Possible）参数化**
+![参数化整体思路演示]({{ site.baseurl }}/img/texture_baking/参数化整体思路演示.jpg)
+<center> 图.利用弹簧系统解释参数tutte原理 </center>
+
+##### ⭐ **ARAP（As-Rigid-As-Possible）参数化**
 
 **内容**：ARAP是一种局部刚体保持的参数化方法，核心思想是<span style="color: #e74c3c;">最小化每个局部区域的非刚体变形</span>。与Tutte和Harmonic不同，ARAP不仅考虑顶点位置，还考虑每个三角形（或局部区域）的<span style="color: #e74c3c;">旋转和缩放</span>，试图让每个局部区域尽可能保持刚体变换，从而在参数化过程中<span style="color: #e74c3c;">最大程度保留原始几何形状</span>。
 
@@ -366,21 +525,21 @@ int main(int argc, char *argv[])
 
 ```
 
-#### 2.2.2 **基于边的展开（Edge-based Unfolding）**
+#### 2.2.3.2 **基于边的展开（Edge-based Unfolding）**
 
 核心思想：展开时候，允许在“边”上切开网格。每条边可以标记为：连续边和UV接缝（seam）。接缝边在 UV 空间中会被“断开”。即，原始的网格时一个连通的曲面，在若干条边上“剪开”，把曲面变成一个或者多个拓扑盘，再映射到2D的平面上。这种思想可以保证三角形再UV展开中不发生翻转，易于受到控制，但是同时也可能因为多个接缝，导致UV被切割为多个“岛”（区域块）。
 
 通常方法：  
 * LSCM（Least Squares Conformal Maps） 
 * ABF / ABF++ 
-* BBF 
+* [BFF](https://www.youtube.com/embed/h_iJFQEb-_A) ([相关代码](https://github.com/GeometryCollective/boundary-first-flattening))
 
 
 这是一份关于 **LSCM（Least Squares Conformal Maps，最小二乘共形映射）** 的深度解析，采用与你提供的 ARAP 风格一致的排版，突出核心逻辑与数学之美。
 
 ---
 
-## ⭐ **LSCM（Least Squares Conformal Maps）参数化**
+##### ⭐ **LSCM（Least Squares Conformal Maps）参数化**
 
 **内容**：LSCM 是一种基于**共形（Conformal）几何**的参数化方法。其核心思想是<span style="color: #e74c3c;">最小化角度畸变</span>。与 ARAP 的局部刚性不同，LSCM 允许局部区域发生均匀的缩放，但要求<span style="color: #e74c3c;">保持形状的角度不变</span>（即满足柯西-黎曼方程）。它是目前工业界（如 Blender, Maya）最常用的 UV 展开算法之一。
 
@@ -440,8 +599,6 @@ void addTriangleContribution(Triangle& T, SparseMatrix& A) {
 
 ```
 
----
-
 **优缺点**：
 
 * **优点**：
@@ -460,14 +617,251 @@ void addTriangleContribution(Triangle& T, SparseMatrix& A) {
 
 * 3. <span style="color: #e74c3c;">**依赖切口**</span>：对于闭合模型，必须手动设置合适的切口（Seams）才能获得好的效果。
 
+用libigl实现lscm算法：
+```cpp
+#include <igl/read_triangle_mesh.h>
+#include <igl/boundary_loop.h>
+#include <igl/harmonic.h>
+#include <igl/lscm.h>
+#include <igl/opengl/glfw/Viewer.h>
 
+#include <Eigen/Core>
+#include <iostream>
+#include <cmath>
 
----
+int main()
+{
+    Eigen::MatrixXd V;
+    Eigen::MatrixXi F;
+    igl::read_triangle_mesh("input.obj", V, F);
 
-**ARAP vs LSCM：我该选哪个？**
+    // ===============================
+    // Step 1: boundary loop
+    // ===============================
+    Eigen::VectorXi bnd;
+    igl::boundary_loop(F, bnd);
 
-* 如果你追求**纹理细节不被拉伸/挤压**（如棋盘格大小一致），选 **ARAP**。
-* 如果你追求**纹理格子保持正方形**（不偏离 90 度），且希望**一键秒出结果**，选 **LSCM**。
+    // ===============================
+    // Step 2: boundary -> unit circle
+    // ===============================
+    int nb = bnd.size();
+    Eigen::MatrixXd bnd_uv(nb, 2);
+
+    for (int i = 0; i < nb; ++i)
+    {
+        double t = 2.0 * M_PI * i / nb;
+        bnd_uv(i, 0) = std::cos(t);
+        bnd_uv(i, 1) = std::sin(t);
+    }
+
+    // ===============================
+    // Step 3: Tutte (harmonic)
+    // ===============================
+    Eigen::MatrixXd UV_init;
+    igl::harmonic(V, F, bnd, bnd_uv, 1, UV_init);
+
+    // ===============================
+    // Step 4: LSCM constraints
+    // ===============================
+    Eigen::VectorXi b(2);
+    Eigen::MatrixXd bc(2, 2);
+
+    b << bnd(0), bnd(nb / 2);
+    bc.row(0) = UV_init.row(b(0));
+    bc.row(1) = UV_init.row(b(1));
+
+    // ===============================
+    // Step 5: LSCM refine
+    // ===============================
+    Eigen::MatrixXd UV;
+    igl::lscm(V, F, b, bc, UV);
+
+    // ===============================
+    // Step 6: visualize
+    // ===============================
+    igl::opengl::glfw::Viewer viewer;
+    viewer.data().set_mesh(V, F);
+    viewer.data().set_uv(UV);
+    viewer.data().show_texture = true;
+    viewer.launch();
+}
+
+```
+
+##### ⭐ **ABF / ABF++（Angle-Based Flattening）参数化**
+
+**内容**：ABF（Angle-Based Flattening）是一种<span style="color: #e74c3c;">基于角度优化的参数化方法</span>，由Sheffer和de Sturler在2001年提出。其核心思想是<span style="color: #e74c3c;">直接优化三角形内角</span>，而不是优化顶点位置，从而在参数化过程中<span style="color: #e74c3c;">最小化角度失真</span>。ABF++是ABF的改进版本，解决了原算法的一些数值稳定性问题，并提高了计算效率。
+
+**原理**：
+
+* **角度约束**：对于每个三角形，其内角之和必须满足：
+  $$\alpha_i + \beta_i + \gamma_i = \pi$$
+  
+  其中 $\alpha_i, \beta_i, \gamma_i$ 是三角形 $i$ 的三个内角。
+
+* **角度有效性约束**：每个内角必须为正：
+  $$\alpha_i > 0, \quad \beta_i > 0, \quad \gamma_i > 0$$
+
+* **顶点角度约束**：对于内部顶点，其周围所有三角形的角度之和必须为 $2\pi$：
+  $$\sum_{j \in N(i)} \theta_{ij} = 2\pi$$
+  
+  其中 $N(i)$ 是顶点 $i$ 周围的三角形集合，$\theta_{ij}$ 是三角形 $j$ 在顶点 $i$ 处的角度。
+
+* **边界顶点约束**：对于边界顶点，角度之和为 $\pi$（如果顶点在边界上）：
+  $$\sum_{j \in N(i)} \theta_{ij} = \pi \quad (\text{边界顶点})$$
+
+* **能量函数**：ABF最小化角度与原始3D网格角度的偏差：
+  $$E_{\text{ABF}} = \sum_{i=1}^{n} \sum_{k=1}^{3} w_{ik} (\alpha_{ik} - \bar{\alpha}_{ik})^2$$
+  
+  其中：
+  * $\alpha_{ik}$ 是参数化后三角形 $i$ 的第 $k$ 个角度
+  * $\bar{\alpha}_{ik}$ 是原始3D网格中对应的角度
+  * $w_{ik}$ 是权重（通常与三角形面积相关）
+
+* **优化问题**：ABF将参数化问题转化为一个<span style="color: #e74c3c;">约束优化问题</span>：
+  $$\min_{\alpha} E_{\text{ABF}}(\alpha)$$
+  
+  约束条件：
+  * 三角形内角和约束：$\alpha_i + \beta_i + \gamma_i = \pi$
+  * 顶点角度约束：$\sum_{j \in N(i)} \theta_{ij} = 2\pi$（内部顶点）
+  * 角度有效性：$\alpha_i > 0, \beta_i > 0, \gamma_i > 0$
+
+**算法流程**：
+
+```cpp
+// ABF参数化伪代码
+void abfParameterization(const Mesh& mesh, UVMap& uvMap) {
+    // 1. 初始化：从原始3D网格提取角度
+    std::vector<double> targetAngles = extract3DAngles(mesh);
+    
+    // 2. 构建约束系统
+    //    - 三角形内角和约束
+    //    - 顶点角度约束（内部顶点 = 2π，边界顶点 = π）
+    //    - 角度有效性约束（> 0）
+    ConstraintSystem constraints = buildConstraintSystem(mesh);
+    
+    // 3. 求解约束优化问题
+    //    使用拉格朗日乘数法或内点法
+    std::vector<double> optimizedAngles = solveConstrainedOptimization(
+        targetAngles, constraints
+    );
+    
+    // 4. 从角度重建UV坐标
+    //    给定角度，可以唯一确定三角形的形状（除了缩放和平移）
+    reconstructUVFromAngles(mesh, optimizedAngles, uvMap);
+    
+    // 5. 归一化到[0,1]范围
+    normalizeUV(uvMap);
+}
+
+// ABF++改进：使用对数空间优化提高数值稳定性
+void abfPlusPlusParameterization(const Mesh& mesh, UVMap& uvMap) {
+    // 1. 在对数空间中优化角度（避免角度为负的问题）
+    std::vector<double> logAngles = logSpaceOptimization(mesh);
+    
+    // 2. 使用更稳定的数值方法求解
+    //    - 改进的线性系统求解器
+    //    - 更好的初始值选择
+    std::vector<double> optimizedAngles = stableSolve(logAngles, mesh);
+    
+    // 3. 重建UV坐标
+    reconstructUVFromAngles(mesh, optimizedAngles, uvMap);
+    normalizeUV(uvMap);
+}
+
+// 从角度重建UV坐标
+void reconstructUVFromAngles(
+    const Mesh& mesh,
+    const std::vector<double>& angles,
+    UVMap& uvMap
+) {
+    // 方法1：使用正弦定理
+    // 对于三角形ABC，已知角度和一条边，可以计算其他边
+    for (const auto& triangle : mesh.triangles) {
+        double alpha = angles[triangle.angleA];
+        double beta = angles[triangle.angleB];
+        double gamma = angles[triangle.angleC];
+        
+        // 使用正弦定理：a/sin(α) = b/sin(β) = c/sin(γ)
+        // 给定一个边的长度，可以计算其他边
+        double edgeLength = computeEdgeLength(triangle, angles);
+        
+        // 从边长度和角度重建三角形形状
+        reconstructTriangle(triangle, edgeLength, alpha, beta, gamma, uvMap);
+    }
+    
+    // 方法2：使用局部坐标系逐步构建
+    // 从一个三角形开始，逐步添加相邻三角形
+    buildUVIncrementally(mesh, angles, uvMap);
+}
+```
+
+**ABF vs ABF++ 对比**：
+
+| 特性 | ABF | ABF++ |
+| --- | --- | --- |
+| **数值稳定性** | 中等，可能出现角度为负 | 高，使用对数空间优化 |
+| **计算效率** | 较慢 | 更快，改进的求解器 |
+| **初始值敏感性** | 对初始值敏感 | 更鲁棒 |
+| **约束处理** | 标准拉格朗日乘数法 | 改进的约束处理 |
+| **适用场景** | 简单到中等复杂度模型 | 复杂模型，大规模网格 |
+
+**优缺点**：
+
+* **优点**：
+  * 1. <span style="color: #e74c3c;">**角度优化**</span>：直接优化角度，能精确控制角度失真
+  * 2. <span style="color: #e74c3c;">**无翻转保证**</span>：通过角度约束，理论上可以避免三角形翻转
+  * 3. <span style="color: #e74c3c;">**高质量结果**</span>：对于需要精确角度保持的应用（如纹理映射），效果优秀
+  * 4. <span style="color: #e74c3c;">**数学严谨**</span>：基于严格的几何约束，理论基础扎实
+
+* **缺点**：
+  * 1. <span style="color: #e74c3c;">**计算复杂**</span>：需要求解大型约束优化问题，计算开销大
+  * 2. <span style="color: #e74c3c;">**数值稳定性**</span>：原ABF算法在某些情况下可能出现数值问题（ABF++已改进）
+  * 3. <span style="color: #e74c3c;">**面积失真**</span>：专注于角度优化，可能牺牲面积保持
+  * 4. <span style="color: #e74c3c;">**边界处理**</span>：边界顶点的角度约束可能限制参数化的灵活性
+
+**算法对比总结**：
+
+| 方法 | 优化目标 | 约束类型 | 计算复杂度 | 适用场景 |
+| --- | --- | --- | --- | --- |
+| **LSCM** | 共形能量（角度） | 线性约束 | O(n) 线性 | 快速共形映射 |
+| **ABF** | 角度偏差 | 非线性约束 | O(n²) 或更高 | 精确角度控制 |
+| **ABF++** | 角度偏差（对数空间） | 改进的非线性约束 | O(n²) 但更稳定 | 复杂模型，高精度需求 |
+| **ARAP** | 局部刚体保持 | 迭代优化 | O(n·iter) | 低失真参数化 |
+
+📌 **注：ABF/ABF++特别适合需要精确角度保持的应用，如CAD建模、工程制图等。对于游戏和实时渲染，LSCM和ARAP通常更实用，因为它们在质量和速度之间有更好的平衡。**
+
+用libigl实现ABF算法：
+```cpp
+#include <igl/read_triangle_mesh.h>
+#include <igl/abf_plus_plus.h>
+#include <igl/opengl/glfw/Viewer.h>
+
+#include <Eigen/Core>
+#include <iostream>
+
+int main()
+{
+    Eigen::MatrixXd V;
+    Eigen::MatrixXi F;
+
+    igl::read_triangle_mesh("input.obj", V, F);
+
+    Eigen::MatrixXd UV;
+
+    if (!igl::abf_plus_plus(V, F, UV))
+    {
+        std::cerr << "ABF++ failed!" << std::endl;
+        return -1;
+    }
+
+    igl::opengl::glfw::Viewer viewer;
+    viewer.data().set_mesh(V, F);
+    viewer.data().set_uv(UV);
+    viewer.data().show_texture = true;
+    viewer.launch();
+}
+```
 
 ```cpp
 // 简化的UV展开伪代码
