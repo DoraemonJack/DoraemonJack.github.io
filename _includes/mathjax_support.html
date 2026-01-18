@@ -12,17 +12,58 @@
         argmin: "\\mathop{\\mathrm{argmin}}"
       }
     },
+    svg: {
+      fontCache: 'global'
+    },
+    chtml: {
+      scale: 1.0
+    },
     options: {
-      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      ignoreHtmlClass: 'no-mathjax',
+      processHtmlClass: 'mathjax'
     },
     startup: {
       ready: function () {
         MathJax.startup.defaultReady();
+        MathJax.typesetPromise().catch(err => console.log(err));
         console.log('MathJax is ready');
       }
     }
   };
 </script>
-<script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+<!-- CDN列表：按优先级尝试加载 -->
+<script>
+  var mathjaxLoadAttempted = false;
+  var cdnSources = [
+    'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.min.js',
+    'https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js'
+  ];
+  
+  function loadMathJaxFromCDN(index) {
+    if (index >= cdnSources.length) {
+      console.warn('All MathJax CDN sources failed to load. Please check your internet connection.');
+      return;
+    }
+    
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = cdnSources[index];
+    
+    script.onerror = function() {
+      console.warn('Failed to load MathJax from: ' + cdnSources[index]);
+      loadMathJaxFromCDN(index + 1);
+    };
+    
+    script.onload = function() {
+      console.log('MathJax loaded successfully from: ' + cdnSources[index]);
+    };
+    
+    document.head.appendChild(script);
+  }
+  
+  // 开始加载
+  loadMathJaxFromCDN(0);
 </script>
