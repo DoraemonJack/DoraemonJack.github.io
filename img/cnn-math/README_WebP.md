@@ -1,4 +1,10 @@
-# CNN 可视化图表生成说明
+---
+layout: page
+title: "CNN 可视化图表生成说明"
+description: "Documentation for CNN visualization script"
+header-img: "img/post-bg-2015.jpg"
+hide-in-nav: true
+---
 
 ## 📋 概述
 

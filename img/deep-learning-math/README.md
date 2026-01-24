@@ -1,4 +1,10 @@
-# 深度学习数学基础 - 可视化图表说明
+---
+layout: page
+title: "深度学习数学基础 - 可视化图表说明"
+description: "Documentation for deep learning mathematical visualizations"
+header-img: "img/post-bg-2015.jpg"
+hide-in-nav: true
+---
 
 本文件夹包含了《深度学习的数学基础：反向传播、微积分与优化理论完全指南》中使用的所有可视化图表。
 

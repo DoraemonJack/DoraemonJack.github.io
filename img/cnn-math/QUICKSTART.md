@@ -1,4 +1,10 @@
-# CNN 可视化图表生成 - 快速开始指南
+---
+layout: page
+title: "CNN 可视化图表生成 - 快速开始指南"
+description: "Instructions for generating CNN visualizations"
+header-img: "img/post-bg-2015.jpg"
+hide-in-nav: true
+---
 
 ## ✨ 最新更新
 
