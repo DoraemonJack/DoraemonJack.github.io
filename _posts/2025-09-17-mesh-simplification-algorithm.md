@@ -10,11 +10,11 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Algorithm
-  - Computer Graphics
-  - Mesh Processing
-  - Geometry
-  - 3D Modeling
+    - Algorithm
+    - Computer Graphics
+    - Mesh Processing
+    - Geometry
+    - 3D Modeling
 ---
 
 网格化简（Mesh Simplification）是三维几何处理中的核心问题之一，旨在减少三角网格的顶点和面片数量，同时尽可能保持原始网格的几何特征和视觉质量。该技术在实时渲染、3D打印、游戏开发、虚拟现实等领域有着广泛应用。本文深入探讨网格化简的基本原理、经典算法及其实现细节。

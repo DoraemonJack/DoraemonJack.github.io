@@ -9,11 +9,11 @@ header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 hidden:       true
 tags:
-  - Algorithm
-  - Design Patterns
-  - C++
-  - Implementation
-  - 算法实现
+    - Algorithm
+    - Design Patterns
+    - C++
+    - Implementation
+    - 算法实现
 ---
 
 本页面展示了五种经典算法设计技术的完整C++实现代码。

@@ -9,12 +9,12 @@ catalog:      true
 header-img: "img/post-bg-algorithm.jpg"
 mathjax:      true
 tags:
-  - Algorithm
-  - Sorting
-  - Data Structure
-  - C++
-  - 数据结构
-  - 算法
+    - Algorithm
+    - Sorting
+    - Data Structure
+    - C++
+    - 数据结构
+    - 算法
 ---
 
 排序算法是计算机科学中最基础也是最重要的算法之一。本文基于实际代码实现，深入分析九种经典排序算法的原理、时间复杂度、空间复杂度和稳定性，并提供详细的对比表格。

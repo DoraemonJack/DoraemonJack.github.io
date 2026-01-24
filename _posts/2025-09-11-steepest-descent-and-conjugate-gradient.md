@@ -10,11 +10,11 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化算法
-  - Steepest Descent
-  - Conjugate Gradient
-  - Numerical Optimization
+    - Optimization
+    - 最优化算法
+    - Steepest Descent
+    - Conjugate Gradient
+    - Numerical Optimization
 ---
 
 最速下降法（Steepest Descent, SD）和共轭梯度法（Conjugate Gradient, CG）是经典的一阶迭代优化方法。SD以“最陡方向”作为下降方向，配合（一维）线搜索求步长；CG在二次型与对称正定（SPD）情形下能在至多 n 步内精确收敛，且在大规模稀疏问题中极为高效。本文给出两法的迭代公式、收敛要点与中等难度例题推导，并在末尾做对比。

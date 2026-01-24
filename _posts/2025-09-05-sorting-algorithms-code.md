@@ -9,12 +9,12 @@ header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 hidden:       true
 tags:
-  - Algorithm
-  - Sorting
-  - Data Structure
-  - C++
-  - 源码
-  - 算法实现
+    - Algorithm
+    - Sorting
+    - Data Structure
+    - C++
+    - 源码
+    - 算法实现
 ---
 
 本页面展示了《经典排序算法归类总结》文章中提到的所有排序算法的完整C++实现代码。

@@ -10,12 +10,12 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Algorithm
-  - 三维算法
-  - Computer Graphics
-  - 3D Reconstruction
-  - Visualization
-  - Geometry
+    - Algorithm
+    - 三维算法
+    - Computer Graphics
+    - 3D Reconstruction
+    - Visualization
+    - Geometry
 ---
 
 移动立方体算法（Marching Cubes Algorithm）是由 Lorensen 和 Cline 在1987年提出的经典算法，用于从三维标量场数据中提取等值面，构建三角网格模型。该算法在医学影像（CT、MRI）、科学可视化、地质建模等领域有着广泛应用。其核心思想是将三维空间划分为立方体网格，通过检查每个立方体的顶点标量值，确定等值面与立方体的交线，进而生成三角面片。

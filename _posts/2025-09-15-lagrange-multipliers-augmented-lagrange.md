@@ -10,12 +10,12 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化算法
-  - Lagrange Multipliers
-  - Augmented Lagrangian
-  - Constrained Optimization
-  - ADMM
+    - Optimization
+    - 最优化算法
+    - Lagrange Multipliers
+    - Augmented Lagrangian
+    - Constrained Optimization
+    - ADMM
 ---
 
 本文深入探讨拉格朗日乘子法和增广拉格朗日乘子法的理论基础、算法推导和实际应用。从经典的等式约束优化出发，逐步介绍不等式约束、KKT条件、罚函数法、增广拉格朗日法，最终延伸到现代的ADMM算法。

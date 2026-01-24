@@ -10,12 +10,12 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - C++
-  - Parallel Programming
-  - OpenMP
-  - Performance Optimization
-  - Cross Platform
-  - Multi-threading
+    - C++
+    - Parallel Programming
+    - OpenMP
+    - Performance Optimization
+    - Cross Platform
+    - Multi-threading
 ---
 
 OpenMP（Open Multi-Processing）是一个支持多平台共享内存并行编程的应用程序接口（API），它通过编译器指令、运行时库和环境变量，为C、C++和Fortran程序提供简单而强大的并行化能力。OpenMP采用"增量并行化"的设计理念，允许开发者逐步将串行代码转换为并行代码，而无需大规模重构。本文深入探讨OpenMP的核心概念、编程模型、实际应用以及跨平台开发的注意事项。

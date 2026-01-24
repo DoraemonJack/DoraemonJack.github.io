@@ -8,11 +8,13 @@ header-img: "img/post-bg-algorithm.jpg"
 catalog: true
 mathjax:      true
 tags:
-  - 数据结构
-  - 算法
-  - 二叉树
-  - 二叉排序树
-  - 遍历算法
+    - 数据结构
+    - Data Structure
+    - 算法
+    - Algorithm
+    - 二叉树
+    - 二叉排序树
+    - 遍历算法
 ---
 
 # 树结构：二叉树、树、二叉排序树等数据结构表示、遍历与实现

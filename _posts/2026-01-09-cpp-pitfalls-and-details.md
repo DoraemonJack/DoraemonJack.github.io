@@ -10,11 +10,11 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - C++
-  - Programming
-  - Pitfalls
-  - Best Practices
-  - Memory Management
+    - C++
+    - Programming
+    - Pitfalls
+    - Best Practices
+    - Memory Management
 ---
 
 “C 使得射中自己的脚变得很容易；C++ 则使得这变得更难，但当你射中时，它会把你的整条腿都打断。”

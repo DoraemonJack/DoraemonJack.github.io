@@ -10,11 +10,11 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化算法
-  - Newton Method
-  - Quasi-Newton
-  - Numerical Methods
+    - Optimization
+    - 最优化算法
+    - Newton Method
+    - Quasi-Newton
+    - Numerical Methods
 ---
 
 本文深入探讨牛顿法和拟牛顿法的理论基础、算法推导和实际应用。从经典的牛顿法出发，逐步介绍BFGS、DFP等拟牛顿算法，并通过详细的例题演示这些方法的计算过程和收敛特性。

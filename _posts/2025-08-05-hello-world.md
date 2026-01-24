@@ -8,9 +8,8 @@ header-img:   "img/post-sample.jpg"
 header-style: text
 catalog:      true
 tags:
-  - Note
-  - Template
-
+    - Note
+    - Template
 ---
 
 > 写在前面：用这篇模板快速开始你的第一篇文章，替换标题、副标题、时间与标签即可。

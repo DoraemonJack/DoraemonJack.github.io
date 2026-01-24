@@ -10,13 +10,14 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Algorithm
-  - Geometry
-  - Computational Geometry
-  - Boolean Operations
-  - Triangulation
-  - 几何算法
-  - 计算机图形学
+    - Algorithm
+    - Geometry
+    - Computational Geometry
+    - Boolean Operations
+    - Triangulation
+    - 几何算法
+    - Geometric Algorithms
+    - 计算机图形学
 ---
 
 几何算法是计算几何学和计算机图形学的核心基础，广泛应用于CAD系统、游戏引擎、物理仿真、机器人路径规划等领域。本文深入探讨二维和三维布尔运算、剖分算法以及其他基础几何算法，从原理到实现全面解析这些经典算法。

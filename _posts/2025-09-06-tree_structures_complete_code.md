@@ -10,15 +10,15 @@ header-img: "img/post-bg-algorithm.jpg"
 mathjax:      false
 hidden:       true
 tags:
-  - Algorithm
-  - Data Structure
-  - C++
-  - Tree
-  - Binary Tree
-  - BST
-  - 算法实现
-  - 二叉树
-  - 二叉排序树
+    - Algorithm
+    - Data Structure
+    - C++
+    - Tree
+    - Binary Tree
+    - BST
+    - 算法实现
+    - 二叉树
+    - 二叉排序树
 ---
 
 # 树结构完整代码实现

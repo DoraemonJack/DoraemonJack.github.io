@@ -7,9 +7,9 @@ author:       "zxh"
 header-style: text
 catalog:      true
 tags:
-  - Blog
-  - Jekyll
-  - Notes
+    - Blog
+    - Jekyll
+    - Notes
 ---
 
 > 这是一篇用于验证站点构建与首页展示的示例文章，也记录了我本地开发与发布的最小工作流。

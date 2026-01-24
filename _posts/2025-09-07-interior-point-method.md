@@ -10,11 +10,11 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化理论
-  - Nonlinear Programming
-  - Math
-  - Interior Point Method
+    - Optimization
+    - 最优化理论
+    - Nonlinear Programming
+    - Math
+    - Interior Point Method
 ---
 
 内点法（Interior Point Method）是求解约束优化问题的重要方法之一，与惩罚函数外点法不同，内点法要求搜索点始终保持在可行域内部。其基本思想是通过构造障碍函数（Barrier Function）来替代约束条件，将约束优化问题转化为无约束优化问题，同时确保迭代点始终在可行域内部。

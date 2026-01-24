@@ -9,10 +9,11 @@ header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 mermaid:      true
 tags:
-  - Algorithm
-  - Visualization
-  - Design Patterns
-  - 数据结构
+    - Algorithm
+    - Visualization
+    - Design Patterns
+    - 数据结构
+    - Data Structure
 ---
 
 本文通过可视化图表深入讲解五种经典算法设计技术的核心思路和执行流程。

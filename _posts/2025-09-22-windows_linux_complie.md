@@ -10,12 +10,12 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - C++
-  - Cross Platform
-  - Build System
-  - CMake
-  - Debugging
-  - Compilation
+    - C++
+    - Cross Platform
+    - Build System
+    - CMake
+    - Debugging
+    - Compilation
 ---
 
 在现代软件开发中，跨平台支持已经成为许多项目的必需功能。C++作为系统级编程语言，在不同平台上存在诸多差异，包括编译器、标准库实现、系统API等。本文详细介绍C++项目在多平台（Windows、Linux、macOS）上的编译和调试方法，帮助开发者构建真正可移植的应用程序。

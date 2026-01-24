@@ -10,10 +10,10 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化理论
-  - Nonlinear Programming
-  - Math
+    - Optimization
+    - 最优化理论
+    - Nonlinear Programming
+    - Math
 ---
 
 惩罚函数法又称乘子法，是将约束优化问题转换为无约束优化问题的方法之一。其基本思想就是通过在原始的目标函数中添加一个障碍函数（也可以理解成惩罚函数）来代替约束条件中的不等式约束。如果当前解不满足约束条件，就在目标项上加上一个正向的惩罚（这里考虑的都是最小化问题），强迫当前解往可行域的方向走。至于正向惩罚的力度，取决于所用的映射函数，即惩罚函数。

@@ -1005,6 +1005,7 @@ samp {
 }
 .navbar-custom .navbar-brand:hover {
   color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.05);
 }
 .navbar-custom .nav li a {
   text-transform: uppercase;
@@ -1012,9 +1013,29 @@ samp {
   line-height: 20px;
   font-weight: 800;
   letter-spacing: 1px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.navbar-custom .nav li a::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+.navbar-custom .nav li a:hover::before,
+.navbar-custom .nav li a:focus::before {
+  width: 100%;
 }
 .navbar-custom .nav li a:active {
   background: rgba(0, 0, 0, 0.12);
+}
+.navbar-custom .navbar-brand {
+  transition: all 0.3s ease;
 }
 @media only screen and (min-width: 768px) {
   .navbar-custom {
@@ -1037,9 +1058,14 @@ samp {
     color: white;
     padding: 20px;
   }
+  .navbar-custom .nav li a::before {
+    height: 3px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(0, 133, 161, 0.8), rgba(255, 255, 255, 0.6));
+  }
   .navbar-custom .nav li a:hover,
   .navbar-custom .nav li a:focus {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0 0 8px rgba(0, 133, 161, 0.3);
   }
   .navbar-custom .nav li a:active {
     background: none;
@@ -1053,13 +1079,28 @@ samp {
 }
 .navbar-custom.invert .navbar-brand {
   color: #404040;
+  transition: all 0.3s ease;
 }
 .navbar-custom.invert .navbar-brand:hover,
 .navbar-custom.invert .navbar-brand:focus {
   color: #0085a1;
+  transform: scale(1.05);
 }
 .navbar-custom.invert .nav li a {
   color: #404040;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.navbar-custom.invert .nav li a::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #0085a1;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
 }
 .navbar-custom.invert .nav li a:hover,
 .navbar-custom.invert .nav li a:focus {
@@ -1091,17 +1132,33 @@ samp {
   }
   .navbar-custom.is-fixed .navbar-brand {
     color: #404040;
+    transition: all 0.3s ease;
   }
   .navbar-custom.is-fixed .navbar-brand:hover,
   .navbar-custom.is-fixed .navbar-brand:focus {
     color: #0085a1;
+    transform: scale(1.05);
   }
   .navbar-custom.is-fixed .nav li a {
     color: #404040;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .navbar-custom.is-fixed .nav li a::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 3px;
+    bottom: 0;
+    left: 50%;
+    background: linear-gradient(90deg, rgba(0, 133, 161, 0.6), rgba(0, 133, 161, 0.9), rgba(0, 133, 161, 0.6));
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
   }
   .navbar-custom.is-fixed .nav li a:hover,
   .navbar-custom.is-fixed .nav li a:focus {
     color: #0085a1;
+    text-shadow: 0 0 6px rgba(0, 133, 161, 0.2);
   }
   .navbar-custom.is-visible {
     /* if the user changes the scrolling direction, we show the header */

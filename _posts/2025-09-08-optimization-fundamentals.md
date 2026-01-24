@@ -10,11 +10,11 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化理论
-  - Convex Analysis
-  - Mathematics
-  - Duality Theory
+    - Optimization
+    - 最优化理论
+    - Convex Analysis
+    - Mathematics
+    - Duality Theory
 ---
 
 最优化理论是现代数学和工程学的重要分支，其核心建立在凸分析和对偶理论的基础之上。本文将从最基础的凸集和凸函数概念出发，逐步深入到共轭函数、拉格朗日对偶等高级理论，为读者构建完整的最优化理论基础。

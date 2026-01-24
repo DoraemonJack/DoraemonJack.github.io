@@ -10,11 +10,11 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化理论
-  - KKT Conditions
-  - Constrained Optimization
-  - Mathematics
+    - Optimization
+    - 最优化理论
+    - KKT Conditions
+    - Constrained Optimization
+    - Mathematics
 ---
 
 KKT条件（Karush-Kuhn-Tucker条件）是约束优化理论中最重要的最优性条件之一。它提供了在约束条件下判断局部最优解的必要条件，是拉格朗日乘数法的推广。本文将从几何直观出发，深入讲解KKT条件的理论基础、几何意义和实际应用。

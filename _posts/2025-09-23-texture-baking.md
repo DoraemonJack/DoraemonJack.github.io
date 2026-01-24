@@ -10,12 +10,12 @@ catalog:      true
 mathjax:      true
 mermaid:      true
 tags:
-  - Computer Graphics
-  - Texture Baking
-  - Rendering
-  - 3D Modeling
-  - Game Development
-  - Algorithm
+    - Computer Graphics
+    - Texture Baking
+    - Rendering
+    - 3D Modeling
+    - Game Development
+    - Algorithm
 ---
 
 纹理烘焙（Texture Baking）是计算机图形学中的一项核心技术，用于将高精度三维模型的细节信息（如光照、阴影、法线、环境遮蔽等）预先计算并存储到低精度模型的纹理贴图中。这项技术在游戏开发、实时渲染、离线渲染管线优化、多级LOD的精模显示等领域有着广泛应用。通过纹理烘焙，可以在保持低多边形模型性能优势的同时，获得高精度模型的视觉效果。

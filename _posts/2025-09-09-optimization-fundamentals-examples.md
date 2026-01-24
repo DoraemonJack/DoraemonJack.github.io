@@ -11,11 +11,11 @@ mathjax:      true
 hidden:       true
 mermaid:      true
 tags:
-  - Optimization
-  - 最优化理论
-  - Convex Analysis
-  - Examples
-  - Mathematics
+    - Optimization
+    - 最优化理论
+    - Convex Analysis
+    - Examples
+    - Mathematics
 ---
 
 本文收集了最优化理论基础中的经典例题，涵盖凸函数判断、凸规划问题识别以及二次型函数的性质分析。通过详细的解题过程，帮助读者深入理解最优化理论的核心概念。

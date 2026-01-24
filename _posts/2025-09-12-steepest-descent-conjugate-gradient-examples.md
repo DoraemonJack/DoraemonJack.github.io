@@ -11,12 +11,12 @@ mathjax:      true
 mermaid:      true
 hidden :      true
 tags:
-  - Optimization
-  - 最优化算法
-  - Examples
-  - Steepest Descent
-  - Conjugate Gradient
-  - Numerical Computation
+    - Optimization
+    - 最优化算法
+    - Examples
+    - Steepest Descent
+    - Conjugate Gradient
+    - Numerical Computation
 ---
 
 本文为《最速下降法与共轭梯度法》的配套例题集，通过详细的手工计算演示两种方法的具体实施过程，包含基础例题、进阶问题和预条件共轭梯度法的实例。每个例题都提供完整的计算步骤和几何直观解释。

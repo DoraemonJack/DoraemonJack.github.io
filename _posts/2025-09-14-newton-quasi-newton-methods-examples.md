@@ -11,14 +11,15 @@ mathjax:      true
 mermaid:      true
 hidden :      true
 tags:
-  - Optimization
-  - 最优化算法
-  - Examples
-  - Newton Method
-  - Quasi-Newton
-  - BFGS
-  - L-BFGS
-  - Numerical Computation
+    - Optimization
+    - 最优化算法
+    - Examples
+    - Newton Method
+    - Quasi-Newton
+    - BFGS
+    - L-BFGS
+    - Numerical Computation
+    
 ---
 
 本文为《牛顿法与拟牛顿法》的配套例题集，通过详细的手工计算演示各种方法的具体实施过程，包含标准牛顿法、修正牛顿法、BFGS、DFP、L-BFGS等算法的实例。每个例题都提供完整的计算步骤、迭代表格和收敛性分析。
