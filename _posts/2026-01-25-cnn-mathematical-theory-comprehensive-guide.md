@@ -4,7 +4,7 @@ title: "深度学习——卷积神经网络 (CNN)"
 subtitle: "理解卷积操作、特征学习与空间层级表示的数学本质，揭示CNN如何处理视觉任务的秘密"
 date: 2026-01-25
 author: "DoraemonJack"
-header-img: "img/post-bg-ml.jpg"
+header-img: "img/article_bg/2026-01-25-cnn-mathematical-theory-comprehensive-guide.webp"
 catalog:      true
 mathjax:      true
 mermaid:      true
@@ -1185,12 +1185,6 @@ def iou(box1, box2):
    - **3D CNN：** 视频和医学影像分析
    - **图神经网络：** 非欧几里得数据的处理
    - **可解释AI：** 理解CNN的决策过程
-
-### 最后的思考
-
-卷积神经网络的成功并非偶然。它优雅地将信号处理、线性代数、群论、优化理论等多个数学分支统一在一个框架中。每一个设计选择（卷积、非线性激活、池化、跳连接）都有坚实的数学基础。
-
-当我们理解了这些数学基础后，我们不仅能更好地使用现有模型，还能创新新的架构，解决更多现实问题。这就是深度学习数学理论的力量。
 
 ---
 

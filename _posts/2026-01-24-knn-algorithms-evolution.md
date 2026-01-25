@@ -1301,5 +1301,3 @@ $$\text{KNN演变} = \begin{cases}
 7. Sarwar, B., et al. (2001). Item-based Collaborative Filtering Recommendation Algorithms.
 
 ---
-
-**作者注**：本文融合了KNN算法30多年的演变历程，从数学原理到工程实践，希望能帮助读者深入理解这一经典算法及其现代扩展。在实际应用中，没有绝对的最优算法，只有最适合的选择。

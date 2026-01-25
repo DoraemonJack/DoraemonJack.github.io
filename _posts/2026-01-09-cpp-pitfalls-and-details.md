@@ -4,7 +4,6 @@ title:        "C++ 相关问题 (持续更新)"
 subtitle:     "从基础到高级特性，总结 C++ 编程中的知识和坑"
 date:         2026-01-09 10:00:00
 author:       "zxh"
-header-style: text
 header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 mathjax:      true

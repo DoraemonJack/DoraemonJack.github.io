@@ -4,7 +4,6 @@ title:        "机器学习——支持向量机(SVM)"
 subtitle:     "理解SVM的数学原理、核函数、优化算法及实际应用"
 date:         2026-01-24 10:00:00
 author:       "zxh"
-header-style: text
 header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 mathjax:      true
@@ -25,8 +24,7 @@ tags:
 ## 一、问题描述与基础概念
 
 ### 1.1 分类问题的核心思想
-
-给定训练集 $D = \{(\mathbf{x}_i, y_i) | i = 1, 2, \ldots, m\}$，其中 $\mathbf{x}_i \in \mathbb{R}^d$ 是特征向量，$y_i \in \{-1, +1\}$ 是类别标签。二分类任务的目标是找到一个超平面：
+给定训练集 $$D = \{(\mathbf{x}_i, y_i) | i = 1, 2, \ldots, m\}$$，其中 $$\mathbf{x}_i \in \mathbb{R}^d$$ 是特征向量，$$y_i \in \{-1, +1\}$$ 是类别标签。二分类任务的目标是找到一个超平面：
 
 $$\mathbf{w}^T \mathbf{x} + b = 0$$
 
@@ -89,6 +87,10 @@ $$\min_{\mathbf{w}, b} \frac{1}{2}\|\mathbf{w}\|^2$$
 
 这是一个**凸二次规划（Quadratic Programming, QP）问题**。
 
+**可视化示意**：下图展示了最大间隔原则的核心思想，支持向量是决定超平面的关键：
+
+![Margin Visualization](/img/svm/08_margin_visualization.webp)
+
 ### 2.2 拉格朗日对偶形式
 
 引入拉格朗日乘数 $\alpha_i \geq 0$，构造拉格朗日函数：
@@ -150,6 +152,10 @@ $$\mathbf{w}^T \mathbf{x} + b = \sum_{i=1}^{m} \alpha_i y_i \mathbf{x}_i^T \math
 
 $$y_i(\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i, \quad i = 1, 2, \ldots, m$$
 
+下图对比了硬间隔和软间隔SVM的区别，以及支持向量的作用：
+
+![Support Vectors Comparison](/img/svm/01_support_vectors.webp)
+
 ### 3.2 软间隔优化问题
 
 $$\min_{\mathbf{w}, b, \boldsymbol{\xi}} \frac{1}{2}\|\mathbf{w}\|^2 + C \sum_{i=1}^{m} \xi_i$$
@@ -161,6 +167,10 @@ $$\xi_i \geq 0, \quad i = 1, 2, \ldots, m$$
 其中 $C > 0$ 是**正则化参数**：
 - $C$ 很大：对错分样本的惩罚大，趋向硬间隔
 - $C$ 很小：允许更多错分，模型更平滑
+
+下图展示了不同 $C$ 值对决策边界的影响：
+
+![C Parameter Effect](/img/svm/03_c_parameter_effect.webp)
 
 ### 3.3 软间隔对偶问题
 
@@ -209,6 +219,10 @@ $$K(\mathbf{x}_i, \mathbf{x}_j) = \tanh(\gamma \mathbf{x}_i^T \mathbf{x}_j + r)$
 
 与神经网络相关，但不总是正定的。
 
+下图对比了四种常用核函数在非线性数据上的效果：
+
+![Kernel Comparison](/img/svm/02_kernel_comparison.webp)
+
 ### 4.3 核函数的必要充分条件
 
 一个函数 $K(\mathbf{x}, \mathbf{z})$ 是有效核函数当且仅当它满足**Mercer定理**：
@@ -243,6 +257,10 @@ $$f(\mathbf{x}) = \text{sign}\left(\sum_{i=1}^{m} \alpha_i y_i K(\mathbf{x}_i, \
 #### 算法思想
 
 每次迭代选择两个拉格朗日乘数 $\alpha_i$ 和 $\alpha_j$（最少工作集），固定其他乘数，求解这两个变量的子问题，然后更新参数。
+
+下图展示了RBF核中 $\gamma$ 参数对决策边界的影响，这是SMO算法训练时的重要超参数：
+
+![Gamma Parameter Effect](/img/svm/04_gamma_parameter_effect.webp)
 
 #### 工作集选择策略
 
@@ -304,6 +322,10 @@ L & \text{if } \alpha_j^{new, unclipped} < L
 
 - 优点：每个分类器训练数据较少
 - 缺点：分类器数量多
+
+下图对比了OvR和OvO两种多分类策略的效果：
+
+![Multiclass Methods](/img/svm/05_multiclass_methods.webp)
 
 ## 七、实际案例：文本分类中的垃圾邮件检测
 
@@ -453,6 +475,10 @@ F1-Score: 2 × (95.0% × 95.0%) / (95.0% + 95.0%) = 95.0%
 总体准确率: (95 + 57) / 200 = 76.0%
 ```
 
+下图展示了改进前后的混淆矩阵对比：
+
+![Confusion Matrix](/img/svm/06_confusion_matrix.webp)
+
 **分析**：
 - 模型在识别垃圾邮件上表现优秀（95%精度）
 - 但漏检了45封实际正常邮件为垃圾邮件（假正例较多）
@@ -502,6 +528,10 @@ F1-Score: 97.3%
 
 支持向量是最靠近决策边界的样本点，这些是最"困难"的样本，对模型的决策起关键作用。
 
+下图展示了原始空间和隐式高维空间的概念对比：
+
+![Feature Space Visualization](/img/svm/07_feature_space_visualization.webp)
+
 ### 7.8 计算复杂度分析
 
 - **训练时间**：
@@ -517,6 +547,10 @@ F1-Score: 97.3%
   - 核矩阵：$800 \times 800 \times 8$字节 ≈ 5.1 MB
   - 权重向量：5000维 ≈ 40 KB
   - 总体：可接受
+
+下图展示了不同数据集大小下的时间和空间复杂度分析：
+
+![Complexity Analysis](/img/svm/09_complexity_analysis.webp)
 
 ## 八、SVM的优缺点与应用
 
@@ -643,8 +677,3 @@ $$\min_{\mathbf{w}, b, \boldsymbol{\xi}} \frac{1}{2}\|\mathbf{w}\|^2 + C_+ \sum_
 5. scikit-learn SVM文档：https://scikit-learn.org/stable/modules/svm.html
 
 ---
-
-**文章完成于**：2026年1月24日  
-**适用场景**：机器学习初学者、算法工程师、数据科学家  
-**难度级别**：中-高级
-

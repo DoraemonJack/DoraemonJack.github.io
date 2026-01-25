@@ -4,7 +4,6 @@ title:        "C++性能调优与内存调试完全指南"
 subtitle:     "从工具实践到最佳方案：GDB、AddressSanitizer、Valgrind、perf等内存和性能优化工具深度解析"
 date:         2026-01-18 12:00:00
 author:       "DoraemonJack"
-header-style: text
 header-img:   "img/post-bg-algorithm.jpg"
 catalog:      true
 mathjax:      true

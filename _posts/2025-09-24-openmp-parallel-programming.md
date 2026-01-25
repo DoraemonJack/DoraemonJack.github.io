@@ -4,7 +4,7 @@ title:        "OpenMP 并行编程详解 —— 从入门到跨平台实践"
 subtitle:     "深入理解OpenMP并行编程模型，掌握多平台开发技巧"
 date:         2025-09-24 10:00:00
 author:       "zxh"
-header-style: text
+
 header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 mathjax:      true

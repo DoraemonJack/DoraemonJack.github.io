@@ -4,7 +4,6 @@ title:        "纹理烘焙技术 —— 高模到低模的映射"
 subtitle:     "三维表面展开以及UV坐标映射"
 date:         2025-09-23 10:00:00
 author:       "zxh"
-header-style: text
 header-img:   "img/post-bg-algorithm.jpg"
 catalog:      true
 mathjax:      true

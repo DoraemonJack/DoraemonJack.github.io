@@ -4,7 +4,6 @@ title:        "最优化理论——基础(凸集，凸函数，共轭函数等)
 subtitle:     "从凸分析到对偶理论的数学基础"
 date:         2025-09-08 10:00:00
 author:       "DoraemonJack"
-header-style: text
 header-img: "img/post-bg-math.jpg"
 catalog:      true
 mathjax:      true

@@ -4,7 +4,6 @@ title:        "几何基础算法 —— 二三维布尔运算与剖分算法详
 subtitle:     "从布尔运算到Delaunay剖分，深入理解几何算法的核心原理"
 date:         2026-01-10 10:00:00
 author:       "zxh"
-header-style: text
 header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 mathjax:      true

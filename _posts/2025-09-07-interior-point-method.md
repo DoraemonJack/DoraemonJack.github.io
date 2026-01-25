@@ -4,7 +4,6 @@ title:        "最优化理论 —— 内点法"
 subtitle:     "在可行域内部寻找最优解的经典方法"
 date:         2025-09-07 10:00:00
 author:       "DoraemonJack"
-header-style: text
 header-img: "img/post-bg-algorithm.jpg"
 catalog:      true
 mathjax:      true

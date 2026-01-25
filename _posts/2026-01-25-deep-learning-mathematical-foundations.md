@@ -4,7 +4,7 @@ title: "深度学习——数学基础、反向传播、微积分与优化理论
 subtitle: "从链式法则到梯度流动，深入理解神经网络的数学本质与实际应用"
 date: 2026-01-25
 author: "DoraemonJack"
-header-img: "img/post-bg-ml.jpg"
+header-img: "img/post-bg-decision-tree.jpg"
 catalog:      true
 mathjax:      true
 mermaid:      true
@@ -1971,7 +1971,6 @@ $$y_i = \gamma \tilde{x}_i + \beta$$
 | 正则化 | 贝叶斯先验 | 防止过拟合 |
 | 批量归一化 | Hessian 调理 | 加速训练 |
 
-这些概念不是孤立的，而是形成了一个统一的数学框架。理解这些基础，才能真正掌握深度学习的本质，而不仅仅是使用框架。
 
 ---
 
@@ -1992,5 +1991,3 @@ $$y_i = \gamma \tilde{x}_i + \beta$$
 2. **链式法则的递归**：梯度如何从输出逐层反向传播
 3. **参数更新**：梯度如何转化为参数改进
 4. **数值稳定性**：Softmax 中减去最大值防止溢出
-
-建议读者在理解每一部分后，修改代码参数（如学习率、网络结构、批量大小）观察其对训练过程的影响，这样会加深对数学理论的理解。

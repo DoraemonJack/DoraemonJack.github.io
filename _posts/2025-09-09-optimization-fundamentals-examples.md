@@ -4,7 +4,6 @@ title:        "最优化理论——基础_例题集"
 subtitle:     "凸函数判断、凸规划问题与二次型函数"
 date:         2025-09-09 10:00:00
 author:       "DoraemonJack"
-header-style: text
 header-img: "img/post-bg-math.jpg"
 catalog:      true
 mathjax:      true

@@ -112,6 +112,10 @@ $$\frac{\partial J}{\partial \mu_k} = -2\sum_{i=1}^{n} r_{ik} (x_i - \mu_k) = 0$
 
 因此 $J^{(t)}$ 单调递减并有下界（≥0），故算法必然收敛。
 
+**图示**：下图展示了K-Means算法在6个不同迭代阶段的聚类过程，可以直观看到簇心如何逐步收敛到最优位置：
+
+![K-Means迭代过程](/img/clustering-algorithms/01_kmeans_iteration.webp)
+
 ### 5. 最优K值选择
 
 #### 5.1 肘部法则(Elbow Method)
@@ -121,6 +125,10 @@ $$\frac{\partial J}{\partial \mu_k} = -2\sum_{i=1}^{n} r_{ik} (x_i - \mu_k) = 0$
 **数学表述**：
 
 $$\text{WCSS}(K) = \sum_{i=1}^{n} \sum_{k=1}^{K} r_{ik} \|x_i - \mu_k\|^2$$
+
+下图是肘部法则的实际应用示例，展示了不同K值对应的WCSS变化。在K=3处出现明显的"肘部"拐点，这是选择K值的最佳位置：
+
+![肘部法则](/img/clustering-algorithms/02_elbow_method.webp)
 
 #### 5.2 轮廓系数(Silhouette Coefficient)
 
@@ -132,6 +140,10 @@ $$\text{WCSS}(K) = \sum_{i=1}^{n} \sum_{k=1}^{K} r_{ik} \|x_i - \mu_k\|^2$$
 $$s_i = \frac{b_i - a_i}{\max(a_i, b_i)}$$
 
 取值范围 $[-1, 1]$，越接近1越好。选择使平均轮廓系数最大的K值。
+
+下图展示了不同K值下的轮廓系数分布。轮廓系数越高、分布越均匀，说明聚类效果越好。可以看到K=3时平均轮廓系数最高：
+
+![轮廓系数](/img/clustering-algorithms/03_silhouette_coefficient.webp)
 
 ### 6. 代码实现
 
@@ -254,6 +266,10 @@ kmeans.fit(X_scaled)
 - 对异常值敏感
 - 不适合处理不同大小和密度的簇
 
+**对比示例**：下图对比了K-Means和DBSCAN在同一月形数据集上的表现。K-Means假设簇为球形，效果较差；而DBSCAN能正确识别非凸形状的簇：
+
+![K-Means vs DBSCAN](/img/clustering-algorithms/04_kmeans_vs_dbscan.webp)
+
 ---
 
 ## DBSCAN算法
@@ -344,6 +360,10 @@ $$|N_\varepsilon(x_i)| \geq \text{MinPts}$$
 $$d_k(x_i) = \text{距离到第k近邻的距离}$$
 
 排序：$d_k(x_{(1)}) \leq d_k(x_{(2)}) \leq \cdots \leq d_k(x_{(n)})$
+
+K-distance图方法通过观察k-距离曲线的"肘部"来确定ε值。下图展示了K-distance图的实际应用，推荐的ε值在肘部位置：
+
+![K-distance图](/img/clustering-algorithms/05_kdistance_plot.webp)
 
 #### 4.2 MinPts的选择
 
@@ -595,6 +615,10 @@ $$\Sigma_k^{(t)} = \frac{1}{N_k^{(t)}} \sum_{i=1}^{n} \gamma_{ik}^{(t)} (x_i - \
 
 $$Q(\theta^{(t)}, \theta^{(t-1)}) = \sum_{i=1}^{n} \sum_{k=1}^{K} \gamma_{ik}^{(t-1)} \ln(\pi_k \mathcal{N}(x_i|\mu_k, \Sigma_k))$$
 
+下图展示了GMM的聚类结果、概率密度分布和混合系数。与K-Means不同，GMM为每个数据点分配了概率而非硬标签，更灵活地表示不确定性：
+
+![GMM可视化](/img/clustering-algorithms/06_gmm_visualization.webp)
+
 ### 4. 模型选择
 
 #### 4.1 赤池信息量准则(AIC)
@@ -608,6 +632,10 @@ $$\text{AIC} = -2\ln p(X|\hat{\theta}) + 2m$$
 $$\text{BIC} = -2\ln p(X|\hat{\theta}) + m\ln n$$
 
 通常BIC在有更多数据时能更好地选择模型。
+
+下图展示了BIC和AIC在选择最优组件数时的应用。两者都在K=3处达到最小值，这正是数据的真实簇数：
+
+![BIC/AIC准则](/img/clustering-algorithms/07_bic_aic_criterion.webp)
 
 ### 5. 代码实现
 
@@ -1107,6 +1135,21 @@ for cluster in range(3):
 
 ## 算法对比
 
+### 1. 性能指标对比
+
+下图展示了三种聚类算法在相同数据集上的性能评估，包括轮廓系数、Davies-Bouldin指数和Calinski-Harabasz指数三个维度的对比。这些指标能够全面反映聚类质量：
+
+![三种算法性能对比](/img/clustering-algorithms/08_algorithm_comparison.webp)
+
+### 2. 不同数据形状上的表现
+
+聚类算法的适用性与数据形状密切相关。下图展示了K-Means、DBSCAN和GMM在球形簇、月形簇和圆形簇三种不同数据形状上的表现。可以清楚地看到：
+- **K-Means**：对球形簇效果最好，但在非凸形状上失效
+- **DBSCAN**：对任意形状都能有效识别，特别擅长处理非凸簇
+- **GMM**：性能介于两者之间，能处理一定的形状多样性
+
+![三种算法在不同形状数据上的表现](/img/clustering-algorithms/09_algorithm_shapes.webp)
+
 ### 综合对比表
 
 | 特性 | K-Means | DBSCAN | GMM |
@@ -1159,6 +1202,18 @@ for cluster in range(3):
 
 聚类算法是数据科学中最强大的工具之一，正确使用可以从数据中挖掘出巨大的商业价值。
 
+### 计算复杂度分析
+
+下图对比了三种算法的时间和空间复杂度。在大规模数据处理中，这些复杂度指标非常重要，直接影响算法的实际可用性：
+
+![复杂度分析](/img/clustering-algorithms/10_complexity_analysis.webp)
+
+从图中可以看出：
+- **时间复杂度**：K-Means的复杂度最低（O(nKdt)），DBSCAN带索引结构时接近线性（O(n log n)），GMM最高（O(nKd²t)）
+- **空间复杂度**：K-Means空间需求最小（O(n+K)），DBSCAN（O(n)），GMM最大（O(nK)）
+
+这意味着在大规模应用中，K-Means通常是最实用的选择；而在数据量较小但需要高精度的场景，可以考虑GMM或DBSCAN。
+
 ---
 
 ## 参考资源
@@ -1178,6 +1233,3 @@ for cluster in range(3):
 
 ---
 
-**作者**：DoraemonJack  
-**发布时间**：2026年1月24日  
-**更新时间**：2026年1月24日

@@ -4,8 +4,7 @@ title:        "机器学习——朴素贝叶斯原理"
 subtitle:     "理解朴素贝叶斯的数学原理"
 date:         2026-01-24 14:00:00
 author:       "zxh"
-header-style: text
-header-img: "img/post-bg-algorithm.jpg"
+header-img: "img/post-bg-ml.jpg"
 catalog:      true
 mathjax:      true
 mermaid:      true
@@ -1352,14 +1351,6 @@ print(f"\n测试预测: {[label_names[p] for p in predictions]}")
 - **异常检测**：不寻常行为识别
 - **实时处理**：低延迟预测需求
 - **资源受限环境**：移动设备、嵌入式系统
-
-### 9.3 未来研究方向
-
-1. **深度学习融合**：结合神经网络和贝叶斯方法（变分自编码器、贝叶斯深度学习）
-2. **因果推理**：从相关性推断因果关系
-3. **图神经网络**：在结构化数据上应用贝叶斯方法
-4. **联邦学习**：在分布式环境中训练朴素贝叶斯模型
-5. **可信AI**：提高模型的鲁棒性和公平性
 
 ---
 
